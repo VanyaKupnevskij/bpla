@@ -1,0 +1,6 @@
+{
+  "port": 80,
+  "jwtSecret": "vanya mern",
+  "mongoUri": "mongodb+srv://VanOk:VanOk1251007@cluster0.4rczyhj.mongodb.net/app?retryWrites=true&w=majority",
+  "baseUrl": "http://localhost:5000"
+}
