@@ -2,6 +2,7 @@ import LinksPage from './pages/LinksPage';
 import CreatePage from './pages/CreatePage';
 import DetailPage from './pages/DetailPage';
 import AuthPage from './pages/AuthPage';
+import MainPage from './pages/MainPage';
 
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -21,7 +22,8 @@ export function useRoutes(isAuthenticated) {
 
   return (
     <Routes>
-      <Route path="/" exact element={<AuthPage />} />
+      {/* <Route path="/" exact element={<AuthPage />} /> */}
+      <Route path="/" exact element={<MainPage />} />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

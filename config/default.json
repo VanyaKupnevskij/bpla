@@ -1,6 +1,6 @@
 {
   "port": 5000,
-  "jwtSecret": "vanya mern",
-  "mongoUri": "mongodb+srv://VanOk:VanOk1251007@cluster0.4rczyhj.mongodb.net/app?retryWrites=true&w=majority",
+  "jwtSecret": "bpla secret_jwt",
+  "mongoUri": "mongodb+srv://bpla_user:bpla_user_password@cluster0.qmdno9j.mongodb.net/?retryWrites=true&w=majority",
   "baseUrl": "http://localhost:5000"
 }
