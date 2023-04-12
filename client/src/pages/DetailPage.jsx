@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { AuthContext } from '../context/context';
 import { useMessage } from '../hooks/message.hook';
 import Loader from '../components/Loader';
-import LinkCard from '../components/LinkCard';
+import BplaCard from '../components/BplaCard';
 
 export default function DetailPage() {
   const { token } = useContext(AuthContext);
@@ -31,5 +31,5 @@ export default function DetailPage() {
     return <Loader />;
   }
 
-  return !loading && link && <LinkCard link={link} />;
+  return !loading && link && <BplaCard link={link} />;
 }

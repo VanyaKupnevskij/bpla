@@ -1,35 +1,25 @@
-import { Link } from 'react-router-dom';
+import BplaCard from './BplaCard';
+
+import Grid from '@mui/material/Grid';
 
 export default function ListLinks({ links }) {
-  if (links.length === 0) {
-    return <p className="center">Посилань поки немає</p>;
-  }
+  // if (links.length === 0) {
+  //   return <p className="center">Посилань поки немає</p>;
+  // }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>№</th>
-          <th>Оригінальна</th>
-          <th>Скорочена</th>
-          <th>Деталі</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {links.map((link, index) => {
-          return (
-            <tr key={link._id}>
-              <td>{index + 1}</td>
-              <td>{link.from}</td>
-              <td>{link.to}</td>
-              <td>
-                <Link to={'/detail/' + link._id}>Відкрити</Link>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <Grid
+      container
+      spacing={1}
+      sx={{
+        overflow: 'auto',
+        height: 'calc(100vh - 12rem)',
+      }}>
+      {Array.from(Array(8)).map((_, ind) => (
+        <Grid item xs={12} sm={6} md={6} lg={3} xl={4} key={ind}>
+          <BplaCard>Title {ind}</BplaCard>
+        </Grid>
+      ))}
+    </Grid>
   );
 }
