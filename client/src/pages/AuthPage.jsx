@@ -1,103 +1,92 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/context';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 
-export default function AuthPage() {
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+
+export default function SignIn() {
   const auth = useContext(AuthContext);
   const message = useMessage();
   const { request, loading, error, clearError } = useHttp();
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
 
   useEffect(() => {
     message(error);
     clearError();
   }, [error, message, clearError]);
 
-  useEffect(() => {
-    window.M.updateTextFields();
-  }, []);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
 
-  function handlerDown(event) {
-    if (event.key === 'Enter') {
-      handlerLogin();
-    }
-  }
-
-  function handlerChange(event) {
-    setForm({ ...form, [event.target.name]: event.target.value });
-  }
-
-  async function handlerRegister() {
     try {
-      const data = await request('/api/auth/register', 'POST', { ...form });
-      message(data.message);
-    } catch (e) {}
-  }
-
-  async function handlerLogin() {
-    try {
-      const data = await request('/api/auth/login', 'POST', { ...form });
+      const data = await request('/api/auth/login', 'POST', {
+        email: form.get('email'),
+        password: form.get('password'),
+      });
       auth.login(data.token, data.userId);
     } catch (e) {}
-  }
+  };
 
   return (
-    <div className="row">
-      <div className="col s6 offset-s3">
-        <h1>Скорочення посилання</h1>
-        <div className="card blue darken-1">
-          <div className="card-content white-text">
-            <span className="card-title">Авторизація</span>
-            <div>
-              <div className="input-field">
-                <input
-                  onChange={handlerChange}
-                  placeholder="Уведіть ваш email"
-                  id="email"
-                  name="email"
-                  type="text"
-                  value={form.email}
-                  className="yellow-input"
-                />
-                <label htmlFor="email">Email</label>
-              </div>
-
-              <div className="input-field">
-                <input
-                  onChange={handlerChange}
-                  onKeyDown={handlerDown}
-                  placeholder="Уведіть ваш пароль"
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={form.password}
-                  className="yellow-input"
-                />
-                <label htmlFor="password">Password</label>
-              </div>
-            </div>
-          </div>
-          <div className="card-action">
-            <button
-              onClick={handlerLogin}
-              className="btn yellow darken-4"
-              disabled={loading}
-              style={{ marginRight: 20 }}>
-              Увійти
-            </button>
-            <button
-              onClick={handlerRegister}
-              className="btn grey lighten-1 black-text"
-              disabled={loading}>
-              Реєстрація
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Container component="main" maxWidth="sm">
+      <Box
+        sx={{
+          boxShadow: 3,
+          borderRadius: 2,
+          px: 4,
+          py: 6,
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+        <Typography component="h1" variant="h5">
+          Вхід до акаунта адміна
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email адреса"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            disabled={loading}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Пароль"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            disabled={loading}
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Запам'ятати мене"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={loading}
+            sx={{ mt: 3, mb: 2 }}>
+            Увійти
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 }

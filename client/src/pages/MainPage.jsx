@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
-import ListLinks from '../components/ListLinks';
+import ListCards from '../components/ListCards';
 import Filters from '../components/Filters';
 import { useState } from 'react';
 import Sort from '../components/Sort';
@@ -37,7 +37,7 @@ export default function MainPage() {
       <Box sx={{ display: 'flex' }}>
         <Filters isDrawer={openFilters} handleClickClose={handleClickClose} />
         <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, p: 3, pt: 0 }}>
-          <ListLinks />
+          <ListCards />
         </Box>
       </Box>
     </Box>

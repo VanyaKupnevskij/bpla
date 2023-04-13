@@ -2,7 +2,7 @@ import BplaCard from './BplaCard';
 
 import Grid from '@mui/material/Grid';
 
-export default function ListLinks({ links }) {
+export default function ListCards() {
   // if (links.length === 0) {
   //   return <p className="center">Посилань поки немає</p>;
   // }
