@@ -1,26 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Box, Typography, Button, ListItem } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 import useUploadFiles from '../hooks/upload-files.hook';
 
-const BorderLinearProgress = styled((theme) => ({
-  root: {
-    height: 15,
-    borderRadius: 5,
-  },
-  colorPrimary: {
-    backgroundColor: '#EEEEEE',
-  },
-  bar: {
-    borderRadius: 5,
-    backgroundColor: '#1a90ff',
-  },
-}))(LinearProgress);
-
 export default function UploadImages() {
-  const [currentFile, setCurrentFile] = useState();
+  const [currentFile, setCurrentFile] = useState(undefined);
   const [previewImage, setPreviewImage] = useState(undefined);
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState('');
@@ -92,7 +77,7 @@ export default function UploadImages() {
       {currentFile && (
         <Box className="my20" display="flex" alignItems="center">
           <Box width="100%" mr={1}>
-            <BorderLinearProgress variant="determinate" value={progress} />
+            <LinearProgress variant="determinate" value={progress} />
           </Box>
           <Box minWidth={35}>
             <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
