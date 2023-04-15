@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectInput({ variants, label }) {
+export default function SelectInput({ variants, label, name }) {
   const [value, setValue] = React.useState('');
 
   const handleChange = (event) => {
@@ -18,6 +18,7 @@ export default function SelectInput({ variants, label }) {
         labelId="demo-select-small"
         id="demo-select-small"
         value={value}
+        name={name}
         label={label}
         onChange={handleChange}>
         <MenuItem value="">

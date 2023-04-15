@@ -32,14 +32,14 @@ function Copyright() {
 
 const steps = ['Інформація', 'Фото', 'Огляд'];
 
-function getStepContent(step) {
-  switch (step) {
+function getStepContent(tempStep, activeStep, handleSave) {
+  switch (activeStep) {
     case 0:
-      return <SummaryInfoForm />;
+      return <SummaryInfoForm triggerChange={tempStep} handleSave={handleSave} />;
     case 1:
-      return <PhotoForm />;
+      return <PhotoForm triggerChange={tempStep} handleSave={handleSave} />;
     case 2:
-      return <Review />;
+      return <Review triggerChange={tempStep} handleSave={handleSave} />;
     default:
       throw new Error('Unknown step');
   }
@@ -53,6 +53,7 @@ export default function CreatePage() {
   const navigate = useNavigate();
 
   const [activeStep, setActiveStep] = React.useState(0);
+  const [tempStep, setTempStep] = React.useState(0);
 
   async function handlerPress(event) {
     if (event.key === 'Enter') {
@@ -72,19 +73,23 @@ export default function CreatePage() {
     }
   }
 
+  const handleSave = () => {
+    setActiveStep(tempStep);
+  };
+
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    setTempStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    setTempStep((prev) => prev - 1);
   };
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4, minHeight: 'calc(100vh - 12rem)' }}>
       <Paper variant="outlined" sx={{ mt: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h1" variant="h4" align="center">
-          Додати новій БПЛА до бази
+          Додати новий БПЛА до бази
         </Typography>
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
           {steps.map((label) => (
@@ -96,13 +101,13 @@ export default function CreatePage() {
         {activeStep === steps.length ? (
           <React.Fragment>
             <Typography variant="h5" gutterBottom>
-              Створенний новий запс у базі
+              Створенний новий запис у базі
             </Typography>
             <Typography variant="subtitle1">Айді запису #2001539.</Typography>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {getStepContent(activeStep)}
+            {getStepContent(tempStep, activeStep, handleSave)}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>

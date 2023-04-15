@@ -1,55 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import LinearProgress from '@mui/material/LinearProgress';
-import { Box, Typography, Button, ListItem } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { useSaveValueOnChange } from '../hooks/saveValueOnChange.hook';
 
-import useUploadFiles from '../hooks/upload-files.hook';
+import { Typography, Button, IconButton, ListItem } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 
-export default function UploadImages() {
+import { useDispatch, useSelector } from 'react-redux';
+import { setPhoto } from '../store/currentBplaSlice';
+
+export default function UploadImages({ triggerChange, handleSave }) {
   const [currentFile, setCurrentFile] = useState(undefined);
-  const [previewImage, setPreviewImage] = useState(undefined);
-  const [progress, setProgress] = useState(0);
-  const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false);
-  const [imageInfos, setImageInfos] = useState([]);
-
-  const { getFiles, upload } = useUploadFiles();
-
+  const [images, setImages] = useState([]);
+  /////////////////////////
+  const dispatch = useDispatch();
+  const [isSave, setIsSave] = useState(0);
+  const photo = useSelector((state) => state.currentBpla.photo);
   useEffect(() => {
-    getFiles().then((response) => setImageInfos(response.data));
+    console.log('1', photo && URL.createObjectURL(new File([photo], 'loaded_Photo')));
+    setCurrentFile(
+      photo &&
+        new File([photo], 'radar.png', {
+          type: 'image/png',
+        }),
+    );
   }, []);
 
+  useEffect(() => {
+    if (currentFile) dispatch(setPhoto(URL.createObjectURL(currentFile)));
+    setIsSave((prev) => prev + 1);
+  }, [triggerChange]);
+
+  useEffect(() => {
+    console.log('2', currentFile);
+  }, [currentFile]);
+  //   const { isSave } = useSaveValueOnChange(images, 'photos', triggerChange);
+  useEffect(() => {
+    handleSave();
+  }, [isSave]);
+
   const selectFile = (event) => {
-    console.log(event.target.files[0]);
     setCurrentFile(event.target.files[0]);
-    setPreviewImage(URL.createObjectURL(event.target.files[0]));
-    setProgress(0);
-    setMessage('');
+
+    setImages((prev) => [event.target.files[0], ...prev]);
   };
 
-  const uploading = () => {
-    setProgress(0);
-
-    upload(currentFile, (event) => {
-      setProgress(Math.round((100 * event.loaded) / event.total));
-    })
-      .then((response) => {
-        setMessage(response.data.message);
-        setIsError(false);
-        return getFiles();
-      })
-      .then((files) => {
-        setImageInfos(files.data);
-      })
-      .catch((err) => {
-        setProgress(0);
-        setMessage('Could not upload the image!');
-        setCurrentFile(undefined);
-        setIsError(true);
-      });
+  const deleteFile = (name) => {
+    if (currentFile?.name == name) {
+      setCurrentFile(undefined);
+    }
+    setImages(images.filter((image) => image.name != name));
   };
 
   return (
-    <div className="mg20">
+    <>
       <label htmlFor="btn-upload">
         <input
           id="btn-upload"
@@ -59,56 +61,41 @@ export default function UploadImages() {
           accept="image/*"
           onChange={selectFile}
         />
-        <Button className="btn-choose" variant="outlined" component="span">
-          Choose Image
+        <Button variant="outlined" component="span">
+          Оберіть фото
         </Button>
       </label>
-      <div className="file-name">{currentFile ? currentFile.name : null}</div>
-      <Button
-        className="btn-upload"
-        color="primary"
-        variant="contained"
-        component="span"
-        disabled={!currentFile}
-        onClick={uploading}>
-        Upload
-      </Button>
+      <div>{currentFile ? currentFile.name : null}</div>
 
       {currentFile && (
-        <Box className="my20" display="flex" alignItems="center">
-          <Box width="100%" mr={1}>
-            <LinearProgress variant="determinate" value={progress} />
-          </Box>
-          <Box minWidth={35}>
-            <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
-          </Box>
-        </Box>
-      )}
-
-      {previewImage && (
-        <div>
-          <img className="preview my20" src={previewImage} alt="" />
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          <img
+            className="preview my20"
+            src={URL.createObjectURL(currentFile)}
+            alt="photo"
+            style={{ maxWidth: '100%' }}
+          />
         </div>
       )}
 
-      {message && (
-        <Typography variant="subtitle2" className={`upload-message ${isError ? 'error' : ''}`}>
-          {message}
-        </Typography>
-      )}
-
       <Typography variant="h6" className="list-header">
-        List of Images
+        Список завантажених фото:
       </Typography>
-      <ul className="list-group">
-        {imageInfos &&
-          imageInfos.map((image, index) => (
+      <ul>
+        {images &&
+          images.map((image, index) => (
             <ListItem divider key={index}>
-              <img src={image.url} alt={image.name} height="80px" className="mr20" />
-              <a href={image.url}>{image.name}</a>
+              <IconButton
+                variant="text"
+                color="secondary"
+                sx={{ mr: 3 }}
+                onClick={() => deleteFile(image.name)}>
+                <ClearIcon />
+              </IconButton>
+              <img src={URL.createObjectURL(image)} alt={image.name} width="50%" className="mr20" />
             </ListItem>
           ))}
       </ul>
-    </div>
+    </>
   );
 }

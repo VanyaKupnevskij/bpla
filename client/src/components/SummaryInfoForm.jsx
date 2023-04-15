@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -13,70 +13,71 @@ import WifiTetheringRoundedIcon from '@mui/icons-material/WifiTetheringRounded';
 import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 
-export default function SummaryInfoForm() {
+import TextInput from './TextInput';
+
+export default function SummaryInfoForm({ triggerChange, handleSave }) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Загальна інформація
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="name"
-            name="name"
-            label="Назва"
-            fullWidth
-            autoComplete="model"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="model"
-            name="model"
-            label="Модель"
-            fullWidth
-            autoComplete="model"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="outlined-textarea"
-            label="Короткий опис"
-            placeholder="Короткий опис бпла..."
-            multiline
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="outlined-textarea"
-            label="Детальний опис загальньої інформації"
-            placeholder="Опис..."
-            multiline
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="vendor"
-            name="vendor"
-            label="Виробник"
-            fullWidth
-            autoComplete="vendor"
-            variant="standard"
-          />
-        </Grid>
+        <TextInput
+          sm={6}
+          required
+          id="name"
+          name="name"
+          label="Назва"
+          placeholder="Назва БПЛА..."
+          triggerChange={triggerChange}
+          handleSave={handleSave}
+        />
+        <TextInput
+          sm={6}
+          required
+          id="model"
+          name="model"
+          label="Модель"
+          placeholder="Модель БПЛА..."
+          triggerChange={triggerChange}
+          handleSave={handleSave}
+        />
+        <TextInput
+          xs={12}
+          id="shortDescription"
+          name="shortDescription"
+          label="Короткий опис"
+          placeholder="Короткий опис БПЛА..."
+          triggerChange={triggerChange}
+          handleSave={handleSave}
+          multiline
+        />
+        <TextInput
+          xs={12}
+          id="description"
+          name="description"
+          label="Детальний опис загальньої інформації"
+          placeholder="Опис..."
+          triggerChange={triggerChange}
+          handleSave={handleSave}
+          multiline
+        />
+        <TextInput
+          xs={12}
+          id="vendor"
+          name="vendor"
+          label="Виробник"
+          placeholder="Виробник БПЛА..."
+          triggerChange={triggerChange}
+          handleSave={handleSave}
+        />
         <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>
             Країна виробник
           </Typography>
           <SelectInput
             label="Країна"
+            name="contryVendor"
             variants={[
               'Україна',
               'Австралія',
@@ -114,7 +115,11 @@ export default function SummaryInfoForm() {
           <Typography variant="h6" gutterBottom>
             Тип двигуна
           </Typography>
-          <SelectInput label="Тип" variants={['Електричний', 'Дізельний', 'Бензиновий']} />
+          <SelectInput
+            label="Тип"
+            name="typeEngine"
+            variants={['Електричний', 'Дізельний', 'Бензиновий']}
+          />
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>
@@ -122,6 +127,7 @@ export default function SummaryInfoForm() {
           </Typography>
           <MultipleSelectChip
             label="Функції"
+            name="functions"
             variants={[
               'Розвідка',
               'Цілевказання',
@@ -142,6 +148,7 @@ export default function SummaryInfoForm() {
           </Typography>
           <MultipleSelectChip
             label="Рівень"
+            name="levelsApply"
             variants={[
               'ТВД',
               'Оперативна група',
@@ -159,6 +166,7 @@ export default function SummaryInfoForm() {
           </Typography>
           <SelectInput
             label="Рівень"
+            name="levelWarActions"
             variants={[
               'Cтратегічний',
               'Оперативний',
@@ -174,6 +182,7 @@ export default function SummaryInfoForm() {
           </Typography>
           <SelectInput
             label="Класс"
+            name="class"
             variants={[
               'МікроБпЛА',
               'МініБпЛА',
@@ -192,7 +201,7 @@ export default function SummaryInfoForm() {
           <Typography variant="h6" gutterBottom>
             Дальність польоту (км)
           </Typography>
-          <NumberSlider min={0} max={2000} step={10} countMarkBase={5} />
+          <NumberSlider name="flightRange" min={0} max={2000} step={10} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -202,7 +211,7 @@ export default function SummaryInfoForm() {
             <FlightRoundedIcon />
             Розмах крил (м)
           </Typography>
-          <NumberSlider min={0} max={30} step={1} countMarkBase={5} />
+          <NumberSlider name="wingspan" min={0} max={30} step={1} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -212,7 +221,7 @@ export default function SummaryInfoForm() {
             <ScaleRoundedIcon />
             Максимальна злітна маса (кг)
           </Typography>
-          <NumberSlider min={0} max={15000} step={50} countMarkBase={5} />
+          <NumberSlider name="maxFlyWeight" min={0} max={15000} step={50} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -222,7 +231,7 @@ export default function SummaryInfoForm() {
             <ScaleRoundedIcon />
             Корисне навантаження (кг)
           </Typography>
-          <NumberSlider min={0} max={2000} step={10} countMarkBase={5} />
+          <NumberSlider name="payloadWeight" min={0} max={2000} step={10} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -232,7 +241,7 @@ export default function SummaryInfoForm() {
             <SpeedRoundedIcon />
             Максимальна швидкість (км/год)
           </Typography>
-          <NumberSlider min={0} max={800} step={10} countMarkBase={5} />
+          <NumberSlider name="maxSpeed" min={0} max={800} step={10} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -242,7 +251,7 @@ export default function SummaryInfoForm() {
             <SpeedRoundedIcon />
             Крейсерна швидкість (км/год)
           </Typography>
-          <NumberSlider min={0} max={500} step={10} countMarkBase={5} />
+          <NumberSlider name="cruiseSpeed" min={0} max={500} step={10} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -252,7 +261,7 @@ export default function SummaryInfoForm() {
             <FlightTakeoffRoundedIcon />
             Максимальна висота польоту (км)
           </Typography>
-          <NumberSlider min={0} max={50} step={1} countMarkBase={5} />
+          <NumberSlider name="maxFlyHeight" min={0} max={50} step={1} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -262,7 +271,7 @@ export default function SummaryInfoForm() {
             <WifiTetheringRoundedIcon />
             Операційна висота використання (км)
           </Typography>
-          <NumberSlider min={0} max={50} step={1} countMarkBase={5} />
+          <NumberSlider name="heightOfUse" min={0} max={50} step={1} countMarkBase={5} />
         </Grid>
         <Grid item xs={12}>
           <Typography
@@ -272,7 +281,7 @@ export default function SummaryInfoForm() {
             <AccessTimeRoundedIcon />
             Тривалість польоту (годин)
           </Typography>
-          <NumberSlider min={0} max={75} step={1} countMarkBase={5} />
+          <NumberSlider name="flyDuration" min={0} max={75} step={1} countMarkBase={5} />
         </Grid>
       </Grid>
     </React.Fragment>

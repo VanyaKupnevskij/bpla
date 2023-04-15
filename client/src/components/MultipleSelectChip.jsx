@@ -19,7 +19,7 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelectChip({ variants, label }) {
+export default function MultipleSelectChip({ variants, label, name }) {
   const [values, setValues] = React.useState([]);
 
   const handleChange = (event) => {
@@ -33,10 +33,11 @@ export default function MultipleSelectChip({ variants, label }) {
     <FormControl sx={{ m: 1, width: '100%' }}>
       <InputLabel id="demo-multiple-chip-label">{label}</InputLabel>
       <Select
-        labelId="demo-multiple-chip-label"
         id="demo-multiple-chip"
-        multiple
+        labelId="demo-multiple-chip-label"
+        name={name}
         value={values}
+        multiple
         onChange={handleChange}
         input={<OutlinedInput id="select-multiple-chip" label={label} />}
         renderValue={(selected) => (

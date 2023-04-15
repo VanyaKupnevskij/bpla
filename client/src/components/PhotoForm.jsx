@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 
 import UploadImages from './upload-images.component';
 
-export default function PhotoForm() {
+export default function PhotoForm({ triggerChange, handleSave }) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -13,17 +13,7 @@ export default function PhotoForm() {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <TextField
-            required
-            id="cardName"
-            label="Name on card"
-            fullWidth
-            autoComplete="cc-name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <UploadImages />
+          <UploadImages triggerChange={triggerChange} handleSave={handleSave} />
         </Grid>
       </Grid>
     </React.Fragment>

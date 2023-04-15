@@ -6,6 +6,8 @@ import { useRoutes } from './routes';
 import { useAuth } from './hooks/auth.hook';
 import { AuthContext } from './context/context';
 import { ConfigContext } from './context/configContext';
+import { store } from './store/index';
+import { Provider } from 'react-redux';
 import Navbar from './components/Navbar';
 import Loader from './components/Loader';
 import { Container, Paper } from '@mui/material';
@@ -49,26 +51,28 @@ function App() {
   }
 
   return (
-    <ConfigContext.Provider value={{ modeView, setModeView }}>
-      <AuthContext.Provider
-        value={{
-          token,
-          login,
-          logout,
-          userId,
-          isAuthenticated,
-        }}>
-        <ThemeProvider theme={modeView === 'light' ? themeLight : themeDark}>
-          <Router>
-            {!isAuthenticated && <Navbar />}
-            <Container maxWidth="xl">
-              <CssBaseline />
-              <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>{routes}</Paper>
-            </Container>
-          </Router>
-        </ThemeProvider>
-      </AuthContext.Provider>
-    </ConfigContext.Provider>
+    <Provider store={store}>
+      <ConfigContext.Provider value={{ modeView, setModeView }}>
+        <AuthContext.Provider
+          value={{
+            token,
+            login,
+            logout,
+            userId,
+            isAuthenticated,
+          }}>
+          <ThemeProvider theme={modeView === 'light' ? themeLight : themeDark}>
+            <Router>
+              {!isAuthenticated && <Navbar />}
+              <Container maxWidth="xl">
+                <CssBaseline />
+                <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>{routes}</Paper>
+              </Container>
+            </Router>
+          </ThemeProvider>
+        </AuthContext.Provider>
+      </ConfigContext.Provider>
+    </Provider>
   );
 }
 

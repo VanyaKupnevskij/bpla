@@ -12,7 +12,7 @@ const Input = styled(MuiInput)`
   font-size: 1.3rem;
 `;
 
-export default function NumberSlider({ min = 0, max = 100, step = 10, countMarkBase = 5 }) {
+export default function NumberSlider({ name, min = 0, max = 100, step = 10, countMarkBase = 5 }) {
   const [value, setValue] = React.useState(min);
   const [countMark, setCountMark] = React.useState(countMarkBase);
   const [marks, setMarks] = React.useState([
@@ -73,6 +73,7 @@ export default function NumberSlider({ min = 0, max = 100, step = 10, countMarkB
       <Grid container spacing={6} alignItems="center">
         <Grid item xs>
           <Slider
+            name={name}
             min={min}
             max={max}
             step={step}
@@ -86,6 +87,7 @@ export default function NumberSlider({ min = 0, max = 100, step = 10, countMarkB
         <Grid item>
           <Input
             value={value}
+            name={name}
             size="small"
             onChange={handleInputChange}
             onBlur={handleBlur}
