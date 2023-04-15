@@ -7,6 +7,8 @@ export function useSaveValueOnChange(newValue, nameField, trigger) {
   const [isSave, setIsSave] = useState(0);
 
   useEffect(() => {
+    if (newValue == null) return;
+
     dispatch(setElement({ value: newValue, name: nameField }));
     setIsSave((prev) => prev + 1);
   }, [trigger]);
