@@ -22,7 +22,7 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelectChip({ variants, label, name, title, xs, sm, md, lg }) {
+export default function MultipleSelect({ variants, label, name, title, xs, sm, md, lg }) {
   const { states } = useContext(FormContext);
   const [values, setValues] = useState(states.current[name]);
 
