@@ -62,13 +62,7 @@ function App() {
             isAuthenticated,
           }}>
           <ThemeProvider theme={modeView === 'light' ? themeLight : themeDark}>
-            <Router>
-              {!isAuthenticated && <Navbar />}
-              <Container maxWidth="xl">
-                <CssBaseline />
-                <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>{routes}</Paper>
-              </Container>
-            </Router>
+            <Router>{routes}</Router>
           </ThemeProvider>
         </AuthContext.Provider>
       </ConfigContext.Provider>

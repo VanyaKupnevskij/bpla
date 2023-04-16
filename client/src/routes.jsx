@@ -14,7 +14,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 export function useRoutes(isAuthenticated) {
   const { FormProvider } = useFormData();
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <>
         <Navbar displaySearch={false} />
