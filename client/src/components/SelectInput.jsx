@@ -10,7 +10,9 @@ import Typography from '@mui/material/Typography';
 
 export default function SelectInput({ variants, label, name, title, xs, sm, md, lg }) {
   const { states } = useContext(FormContext);
-  const [value, setValue] = useState(states.current[name]);
+  let initValue = variants.indexOf(states.current[name]);
+  initValue = initValue == -1 ? '' : initValue;
+  const [value, setValue] = useState(initValue);
 
   const handleChange = (event) => {
     setValue(event.target.value);

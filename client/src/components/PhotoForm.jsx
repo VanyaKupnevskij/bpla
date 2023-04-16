@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
-import UploadImages from './upload-images.component';
+import UploadImages from './UploadImages';
 
 export default function PhotoForm() {
   useEffect(() => {

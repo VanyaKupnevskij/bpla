@@ -15,6 +15,7 @@ function RenderListOptions({ descriptions }) {
       case 'TextInput':
         return (
           <TextInput
+            key={item.name}
             sm={index <= 1 ? 6 : 12}
             required={item.required}
             id={item.name}
@@ -27,6 +28,7 @@ function RenderListOptions({ descriptions }) {
       case 'SelectInput':
         return (
           <SelectInput
+            key={item.name}
             xs={12}
             title={item.title}
             name={item.name}
@@ -38,6 +40,7 @@ function RenderListOptions({ descriptions }) {
       case 'MultipleSelect':
         return (
           <MultipleSelect
+            key={item.name}
             xs={12}
             title={item.title}
             name={item.name}
@@ -49,6 +52,7 @@ function RenderListOptions({ descriptions }) {
       case 'NumberSlider':
         return (
           <NumberSlider
+            key={item.name}
             xs={12}
             title={item.title}
             IconComponent={item.icon}

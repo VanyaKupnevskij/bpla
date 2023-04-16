@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import SummaryInfoForm from '../components/SummaryInfoForm';
 import PhotoForm from '../components/PhotoForm';
 import Review from '../components/Review';
+import { FormContext } from '../context/formContext';
 
 function Copyright() {
   return (
@@ -54,6 +55,7 @@ export default function CreatePage() {
   const navigate = useNavigate();
 
   const [activeStep, setActiveStep] = React.useState(0);
+  const { states } = useContext(FormContext);
 
   async function handlerPress(event) {
     if (event.key === 'Enter') {
@@ -72,6 +74,10 @@ export default function CreatePage() {
       }
     }
   }
+
+  const handleSubmit = () => {
+    console.log(states.current);
+  };
 
   const handleNext = () => {
     setActiveStep((prev) => prev + 1);
@@ -112,9 +118,15 @@ export default function CreatePage() {
                 </Button>
               )}
 
-              <Button variant="contained" onClick={handleNext} sx={{ mt: 3, ml: 1 }}>
-                {activeStep === steps.length - 1 ? 'Додати дані' : 'Далі'}
-              </Button>
+              {activeStep === steps.length - 1 ? (
+                <Button variant="contained" onClick={handleSubmit} sx={{ mt: 3, ml: 1 }}>
+                  Додати дані
+                </Button>
+              ) : (
+                <Button variant="contained" onClick={handleNext} sx={{ mt: 3, ml: 1 }}>
+                  Далі
+                </Button>
+              )}
             </Box>
           </React.Fragment>
         )}
