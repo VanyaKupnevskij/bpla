@@ -5,15 +5,20 @@ import MainPage from './pages/MainPage';
 
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useFormData } from './hooks/formData.hook';
 
 export function useRoutes(isAuthenticated) {
+  const { FormProvider } = useFormData();
+
   if (!isAuthenticated) {
     return (
-      <Routes>
-        <Route path="/create" exact element={<CreatePage />} />
+      <FormProvider>
+        <Routes>
+          <Route path="/create" exact element={<CreatePage />} />
 
-        <Route path="*" element={<Navigate to="/create" />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/create" />} />
+        </Routes>
+      </FormProvider>
     );
   }
 

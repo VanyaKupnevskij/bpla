@@ -13,6 +13,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+
 import SummaryInfoForm from '../components/SummaryInfoForm';
 import PhotoForm from '../components/PhotoForm';
 import Review from '../components/Review';
@@ -32,14 +33,14 @@ function Copyright() {
 
 const steps = ['Інформація', 'Фото', 'Огляд'];
 
-function getStepContent(tempStep, activeStep, handleSave) {
+function getStepContent(activeStep) {
   switch (activeStep) {
     case 0:
-      return <SummaryInfoForm triggerChange={tempStep} handleSave={handleSave} />;
+      return <SummaryInfoForm />;
     case 1:
-      return <PhotoForm triggerChange={tempStep} handleSave={handleSave} />;
+      return <PhotoForm />;
     case 2:
-      return <Review triggerChange={tempStep} handleSave={handleSave} />;
+      return <Review />;
     default:
       throw new Error('Unknown step');
   }
@@ -53,7 +54,6 @@ export default function CreatePage() {
   const navigate = useNavigate();
 
   const [activeStep, setActiveStep] = React.useState(0);
-  const [tempStep, setTempStep] = React.useState(0);
 
   async function handlerPress(event) {
     if (event.key === 'Enter') {
@@ -73,16 +73,12 @@ export default function CreatePage() {
     }
   }
 
-  const handleSave = () => {
-    setActiveStep(tempStep);
-  };
-
   const handleNext = () => {
-    setTempStep((prev) => prev + 1);
+    setActiveStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
-    setTempStep((prev) => prev - 1);
+    setActiveStep((prev) => prev - 1);
   };
 
   return (
@@ -107,7 +103,7 @@ export default function CreatePage() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {getStepContent(tempStep, activeStep, handleSave)}
+            {getStepContent(activeStep)}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>

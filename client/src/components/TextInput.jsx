@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useSaveValueOnChange } from '../hooks/saveValueOnChange.hook';
+import { useContext, useEffect, useState } from 'react';
+import { FormContext } from '../context/formContext';
 
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -16,19 +15,17 @@ export default function TextInput({
   sm,
   md,
   lg,
-  triggerChange,
-  handleSave,
 }) {
-  const [value, setValue] = useState(useSelector((state) => state.currentBpla[name]));
-
-  const { isSave } = useSaveValueOnChange(value, name, triggerChange);
-  useEffect(() => {
-    handleSave();
-  }, [isSave]);
+  const { states } = useContext(FormContext);
+  const [value, setValue] = useState(states.current[name]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
   };
+
+  useEffect(() => {
+    states.current[name] = value;
+  }, [value]);
 
   return (
     <Grid item xs={xs} sm={sm} md={md} lg={lg}>
