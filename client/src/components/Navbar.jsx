@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ModeSwitch from './ModeSwitch';
 import FormGroup from '@mui/material/FormGroup';
 
-export default function Navbar() {
+export default function Navbar({ displaySearch = true }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
@@ -29,28 +29,36 @@ export default function Navbar() {
               БПЛА
             </Typography>
 
-            <Paper
-              component="form"
-              elevation={3}
+            {displaySearch && (
+              <Paper
+                component="form"
+                elevation={3}
+                sx={{
+                  m: '4px',
+                  p: '2px 4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                }}>
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Пошук БПЛА..."
+                  inputProps={{ 'aria-label': 'search bpla' }}
+                />
+                <Tooltip TransitionComponent={Zoom} title="Search">
+                  <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                </Tooltip>
+              </Paper>
+            )}
+
+            <FormGroup
               sx={{
-                m: '4px',
-                p: '2px 4px',
-                display: 'flex',
-                alignItems: 'center',
-                flexGrow: 1,
+                pl: { xs: 2, sm: 3, md: 5 },
+                ml: 'auto',
+                display: { xs: 'none', sm: 'block' },
               }}>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Пошук БПЛА..."
-                inputProps={{ 'aria-label': 'search bpla' }}
-              />
-              <Tooltip TransitionComponent={Zoom} title="Search">
-                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </Tooltip>
-            </Paper>
-            <FormGroup sx={{ pl: { xs: 2, sm: 3, md: 5 }, display: { xs: 'none', sm: 'block' } }}>
               <ModeSwitch />
             </FormGroup>
           </Toolbar>
