@@ -14,10 +14,14 @@ function ListParameters({ states }) {
     <List disablePadding>
       {listParameters.map((parameter, index) => {
         const backColor = index & 1 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(10, 10, 10, 0.05)';
-        const value =
-          parameter.type === 'MultipleSelect'
-            ? states.current[parameter.name].map((item) => <div>{item}</div>)
-            : states.current[parameter.name] || '---';
+        let value = '---';
+        if (parameter.type === 'MultipleSelect') {
+          if (states.current[parameter.name].length !== 0) {
+            value = states.current[parameter.name].map((item) => <div key={item}>{item}</div>);
+          }
+        } else {
+          value = states.current[parameter.name] || '---';
+        }
 
         return (
           <ListItem key={parameter.name} sx={{ py: 1, px: 1, background: backColor }}>
@@ -45,7 +49,7 @@ export default function Review() {
         Перевірте всю інформацію
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <ImagesCarousel />
+        <ImagesCarousel images={states.current.images} />
       </div>
       <ListParameters states={states} />
     </>
