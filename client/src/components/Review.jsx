@@ -1,93 +1,53 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { FormContext } from '../context/formContext';
+import ImagesCarousel from './ImagesCarousel';
+
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Grid from '@mui/material/Grid';
 
-const products = [
-  {
-    name: 'Product 1',
-    desc: 'A nice thing',
-    price: '$9.99',
-  },
-  {
-    name: 'Product 2',
-    desc: 'Another thing',
-    price: '$3.45',
-  },
-  {
-    name: 'Product 3',
-    desc: 'Something else',
-    price: '$6.51',
-  },
-  {
-    name: 'Product 4',
-    desc: 'Best thing of all',
-    price: '$14.11',
-  },
-  { name: 'Shipping', desc: '', price: 'Free' },
-];
+import listParameters from '../context/listParameters';
 
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Card type', detail: 'Visa' },
-  { name: 'Card holder', detail: 'Mr John Smith' },
-  { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date', detail: '04/2024' },
-];
+function ListParameters({ states }) {
+  return (
+    <List disablePadding>
+      {listParameters.map((parameter, index) => {
+        const backColor = index & 1 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(10, 10, 10, 0.05)';
+        const value =
+          parameter.type === 'MultipleSelect'
+            ? states.current[parameter.name].map((item) => <div>{item}</div>)
+            : states.current[parameter.name] || '---';
+
+        return (
+          <ListItem key={parameter.name} sx={{ py: 1, px: 1, background: backColor }}>
+            <ListItemText primary={parameter.label ?? parameter.title} />
+            <Typography variant="overline" sx={{ maxWidth: '70%' }}>
+              {value}
+            </Typography>
+          </ListItem>
+        );
+      })}
+    </List>
+  );
+}
 
 export default function Review() {
+  const { states } = useContext(FormContext);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Typography variant="h6" gutterBottom>
         Перевірте всю інформацію
       </Typography>
-      <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
-
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $34.06
-          </Typography>
-        </ListItem>
-      </List>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Shipping
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Grid>
-      </Grid>
-    </React.Fragment>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <ImagesCarousel />
+      </div>
+      <ListParameters states={states} />
+    </>
   );
 }

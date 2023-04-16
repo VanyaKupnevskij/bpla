@@ -33,7 +33,7 @@ function Copyright() {
 
 const steps = ['Інформація', 'Фото', 'Огляд'];
 
-function getStepContent(activeStep) {
+function StepContent({ activeStep }) {
   switch (activeStep) {
     case 0:
       return <SummaryInfoForm />;
@@ -103,7 +103,8 @@ export default function CreatePage() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {getStepContent(activeStep)}
+            <StepContent activeStep={activeStep} />
+
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>

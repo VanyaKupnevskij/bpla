@@ -17,7 +17,7 @@ export default function SelectInput({ variants, label, name, title, xs, sm, md, 
   };
 
   useEffect(() => {
-    states.current[name] = value;
+    states.current[name] = variants[value];
   }, [value]);
 
   return (
