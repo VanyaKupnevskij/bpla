@@ -18,6 +18,7 @@ import SummaryInfoForm from '../components/SummaryInfoForm';
 import PhotoForm from '../components/PhotoForm';
 import Review from '../components/Review';
 import { FormContext } from '../context/formContext';
+import useUploadFiles from '../hooks/upload-files.hook';
 
 function Copyright() {
   return (
@@ -56,6 +57,7 @@ export default function CreatePage() {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const { states } = useContext(FormContext);
+  const { formData, upload, getFileId } = useUploadFiles();
 
   async function handlerPress(event) {
     if (event.key === 'Enter') {
@@ -76,7 +78,28 @@ export default function CreatePage() {
   }
 
   const handleSubmit = () => {
-    console.log(states.current);
+    formData.current = new FormData();
+
+    for (const [key, value] of Object.entries(states.current)) {
+      if (key == 'images') continue;
+
+      if (Array.isArray(value)) {
+        for (let item of value) {
+          formData.current.append(String(key), item);
+        }
+      } else {
+        formData.current.append(String(key), value);
+      }
+    }
+
+    upload();
+  };
+
+  const handleGetFile = async () => {
+    const id = '4e455635b0565e5729c5a2c617a80615';
+    const data = await getFileId(id);
+    console.log('File:', data);
+    states.current.images.push(URL.createObjectURL(data));
   };
 
   const handleNext = () => {
@@ -117,6 +140,9 @@ export default function CreatePage() {
                   Назад
                 </Button>
               )}
+              <Button onClick={handleGetFile} sx={{ mt: 3, ml: 1 }}>
+                Get server file
+              </Button>
 
               {activeStep === steps.length - 1 ? (
                 <Button variant="contained" onClick={handleSubmit} sx={{ mt: 3, ml: 1 }}>

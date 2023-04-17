@@ -26,7 +26,7 @@ function ListParameters({ states }) {
         return (
           <ListItem key={parameter.name} sx={{ py: 1, px: 1, background: backColor }}>
             <ListItemText primary={parameter.label ?? parameter.title} />
-            <Typography variant="overline" sx={{ maxWidth: '70%' }}>
+            <Typography variant="body2" sx={{ maxWidth: '70%' }}>
               {value}
             </Typography>
           </ListItem>

@@ -1,12 +1,11 @@
+import { useRef } from 'react';
 import http from '../axios.common';
 
 export default function useUploadFiles() {
-  function upload(file, onUploadProgress) {
-    let formData = new FormData();
+  const formData = useRef(new FormData());
 
-    formData.append('file', file);
-
-    return http.post('/upload', formData, {
+  function upload(onUploadProgress) {
+    return http.post('/upload', formData.current, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -18,5 +17,11 @@ export default function useUploadFiles() {
     return http.get('/files');
   }
 
-  return { upload, getFiles };
+  function getFileId(id) {
+    return http.get('/bpla/' + id, { responseType: 'blob' }).then((res) => {
+      return new File([res.data], 'photo');
+    });
+  }
+
+  return { formData, upload, getFiles, getFileId };
 }

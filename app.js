@@ -10,8 +10,8 @@ app.use(corsMiddleware);
 app.use(express.json({ extended: true }));
 
 app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/link', require('./routes/link.routes'));
-app.use('/t', require('./routes/redirect.routes'));
+app.use('/api/upload', require('./routes/upload.routes'));
+app.use('/api/bpla', require('./routes/bpla.routes'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/', express.static(path.join(__dirname, 'client', 'build')));
