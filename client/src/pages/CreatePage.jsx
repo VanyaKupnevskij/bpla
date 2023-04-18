@@ -18,7 +18,7 @@ import SummaryInfoForm from '../components/SummaryInfoForm';
 import PhotoForm from '../components/PhotoForm';
 import Review from '../components/Review';
 import { FormContext } from '../context/formContext';
-import useUploadFiles from '../hooks/upload-files.hook';
+import useBplaServer from '../hooks/bplaServer.hook';
 
 function Copyright() {
   return (
@@ -49,33 +49,9 @@ function StepContent({ activeStep }) {
 }
 
 export default function CreatePage() {
-  const auth = useContext(AuthContext);
-  const [link, setLink] = useState('');
-  const message = useMessage();
-  const { request } = useHttp();
-  const navigate = useNavigate();
-
   const [activeStep, setActiveStep] = React.useState(0);
   const { states } = useContext(FormContext);
-  const { formData, upload, getBplaId } = useUploadFiles();
-
-  async function handlerPress(event) {
-    if (event.key === 'Enter') {
-      try {
-        const data = await request(
-          '/api/link/generate',
-          'POST',
-          { from: link },
-          {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        );
-        navigate('/detail/' + data.link._id);
-      } catch (error) {
-        message(error.message);
-      }
-    }
-  }
+  const { formData, createBpla, getBplaId, getBplas } = useBplaServer();
 
   const handleSubmit = () => {
     formData.current = new FormData();
@@ -92,7 +68,7 @@ export default function CreatePage() {
       }
     }
 
-    upload();
+    createBpla();
   };
 
   const handleGetFile = async () => {
@@ -103,7 +79,8 @@ export default function CreatePage() {
     for (let photo of data.photos) {
       states.current.images.push(photo);
     }
-    // states.current.images.push(URL.createObjectURL(data));
+
+    console.log('list:', await getBplas());
   };
 
   const handleNext = () => {
