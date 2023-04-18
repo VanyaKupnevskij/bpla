@@ -13,6 +13,9 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/upload', require('./routes/upload.routes'));
 app.use('/api/bpla', require('./routes/bpla.routes'));
 
+app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
+
 if (process.env.NODE_ENV === 'production') {
   app.use('/', express.static(path.join(__dirname, 'client', 'build')));
 

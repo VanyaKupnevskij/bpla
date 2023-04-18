@@ -17,11 +17,15 @@ export default function useUploadFiles() {
     return http.get('/files');
   }
 
-  function getFileId(id) {
-    return http.get('/bpla/' + id, { responseType: 'blob' }).then((res) => {
-      return new File([res.data], 'photo');
-    });
+  function getBplaId(id) {
+    return http.get('/bpla/' + id).then((res) => res.data);
   }
 
-  return { formData, upload, getFiles, getFileId };
+  // function getFileId(id) {
+  //   return http.get('/bpla/' + id, { responseType: 'blob' }).then((res) => {
+  //     return new File([res.data], 'photo');
+  //   });
+  // }
+
+  return { formData, upload, getFiles, getBplaId };
 }

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const Link = require('../models/Link');
+const Bpla = require('../models/Bpla');
 const router = Router();
 
 // router.get('/', async (req, res) => {
@@ -27,7 +27,13 @@ router.get('/:id', async (req, res) => {
     //   return res.redirect(link.from);
     // }
     //return res.status(404).json('Посилання не знайдено');
-    res.download('uploads/' + req.params.id, 'photo');
+    const bpla = await Bpla.findById(req.params.id);
+
+    if (!bpla) {
+      return res.status(404).json({ message: 'Такий БПЛА не існує' });
+    }
+
+    res.json(bpla);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

@@ -57,7 +57,7 @@ export default function CreatePage() {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const { states } = useContext(FormContext);
-  const { formData, upload, getFileId } = useUploadFiles();
+  const { formData, upload, getBplaId } = useUploadFiles();
 
   async function handlerPress(event) {
     if (event.key === 'Enter') {
@@ -96,10 +96,14 @@ export default function CreatePage() {
   };
 
   const handleGetFile = async () => {
-    const id = '4e455635b0565e5729c5a2c617a80615';
-    const data = await getFileId(id);
-    console.log('File:', data);
-    states.current.images.push(URL.createObjectURL(data));
+    const id = '643eb44f44908decc575d27d';
+    const data = await getBplaId(id);
+    console.log('Bpla:', data);
+    states.current.images = [];
+    for (let photo of data.photos) {
+      states.current.images.push(photo);
+    }
+    // states.current.images.push(URL.createObjectURL(data));
   };
 
   const handleNext = () => {
