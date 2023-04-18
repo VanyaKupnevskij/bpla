@@ -30,7 +30,10 @@ export default function ListCards() {
       }}>
       {bplas.map((bpla) => (
         <Grid item xs={12} sm={6} md={6} lg={3} xl={4} key={bpla._id}>
-          <BplaCard title={bpla._name + ' ' + bpla.model} preview={bpla?.photos[0]}>
+          <BplaCard
+            idBpla={bpla._id}
+            title={bpla._name + ' ' + bpla.model}
+            preview={bpla?.photos[0]}>
             {bpla.shortDescription}
           </BplaCard>
         </Grid>

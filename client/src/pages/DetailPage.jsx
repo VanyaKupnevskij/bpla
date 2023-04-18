@@ -1,35 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useHttp } from '../hooks/http.hook';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { AuthContext } from '../context/context';
-import { useMessage } from '../hooks/message.hook';
-import Loader from '../components/Loader';
-import BplaCard from '../components/BplaCard';
+
+import ImagesCarousel from '../components/ImagesCarousel';
+import TableParameters from '../components/TableParameters';
+import useBplaServer from '../hooks/bplaServer.hook';
+import { Container } from '@mui/material';
 
 export default function DetailPage() {
-  const { token } = useContext(AuthContext);
-  const [link, setLink] = useState({});
-  const message = useMessage();
-  const { request, loading } = useHttp();
-  const linkId = useParams().id;
+  const [data, setData] = useState(null);
+  const { getBplaId, isLoading } = useBplaServer();
+  const bplaId = useParams().id;
 
-  useEffect(() => {
-    async function getLink() {
-      try {
-        const data = await request('/api/link/' + linkId, 'GET', null, {
-          Authorization: `Bearer ${token}`,
-        });
-        setLink(data);
-      } catch (error) {
-        message(error.message);
-      }
-    }
-    getLink();
-  }, [token, linkId, request, message]);
-
-  if (loading) {
-    return <Loader />;
+  async function getBpla() {
+    setData(await getBplaId(bplaId));
   }
 
-  return !loading && link && <BplaCard link={link} />;
+  useEffect(() => {
+    getBpla();
+  }, []);
+
+  return (
+    <Container component="main" maxWidth="md">
+      {!isLoading && (
+        <>
+          <ImagesCarousel images={data.photos} />
+          <TableParameters datas={data} />
+        </>
+      )}
+    </Container>
+  );
 }

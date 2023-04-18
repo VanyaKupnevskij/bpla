@@ -8,6 +8,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 
+import noPhoto from '../images/noPhoto.jpg';
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function renderImagesList(images, activeStep) {
@@ -32,7 +34,9 @@ function renderImagesList(images, activeStep) {
   ));
 }
 
-function ImagesCarousel({ images }) {
+function ImagesCarousel({ images = [] }) {
+  images = images.length === 0 ? [noPhoto] : images;
+
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
 
