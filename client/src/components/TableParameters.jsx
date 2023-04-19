@@ -24,8 +24,8 @@ export default function ListParameters({ datas }) {
             key={parameter.name}
             alignItems="flex-start"
             sx={{ py: 1, px: 1, background: backColor }}>
-            <ListItemText primary={parameter.label ?? parameter.title} sx />
-            <Typography variant="body2" sx={{ maxWidth: '70%' }}>
+            <ListItemText primary={parameter.label ?? parameter.title} />
+            <Typography variant="caption" sx={{ maxWidth: '70%' }}>
               {value}
             </Typography>
           </ListItem>
