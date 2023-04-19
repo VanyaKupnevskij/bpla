@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
-router.post('/', upload.array('photos'), async (req, res) => {
+router.post('/', auth, upload.array('photos'), async (req, res) => {
   try {
     const existing = await Bpla.findOne({ _name: req.body._name });
     if (existing) {

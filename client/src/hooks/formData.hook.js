@@ -9,6 +9,7 @@ export function useFormData() {
     model: '',
     shortDescription: '',
     description: '',
+    sourceUrl: '',
     vendor: '',
     contryVendor: '',
     typeEngine: '',

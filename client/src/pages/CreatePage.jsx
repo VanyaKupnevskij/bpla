@@ -1,9 +1,6 @@
-import React from 'react';
-import { useState, useContext } from 'react';
-import { useHttp } from '../hooks/http.hook';
-import { AuthContext } from '../context/context';
-import { useMessage } from '../hooks/message.hook';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -51,7 +48,8 @@ function StepContent({ activeStep }) {
 export default function CreatePage() {
   const [activeStep, setActiveStep] = React.useState(0);
   const { states } = useContext(FormContext);
-  const { formData, createBpla, getBplaId, getBplas } = useBplaServer();
+  const { formData, createBpla } = useBplaServer();
+  const [createdId, setCreatedId] = useState(0);
 
   const handleSubmit = () => {
     formData.current = new FormData();
@@ -68,19 +66,12 @@ export default function CreatePage() {
       }
     }
 
-    createBpla();
-  };
-
-  const handleGetFile = async () => {
-    const id = '643eb44f44908decc575d27d';
-    const data = await getBplaId(id);
-    console.log('Bpla:', data);
-    states.current.images = [];
-    for (let photo of data.photos) {
-      states.current.images.push(photo);
-    }
-
-    console.log('list:', await getBplas());
+    createBpla()
+      .then((res) => {
+        handleNext();
+        setCreatedId(res.data.id);
+      })
+      .catch((err) => alert(err));
   };
 
   const handleNext = () => {
@@ -89,6 +80,10 @@ export default function CreatePage() {
 
   const handleBack = () => {
     setActiveStep((prev) => prev - 1);
+  };
+
+  const handleStart = () => {
+    setActiveStep(0);
   };
 
   return (
@@ -109,7 +104,11 @@ export default function CreatePage() {
             <Typography variant="h5" gutterBottom>
               Створенний новий запис у базі
             </Typography>
-            <Typography variant="subtitle1">Айді запису #2001539.</Typography>
+            <Typography variant="subtitle1">Айді запису #{createdId}.</Typography>
+
+            <Button variant="contained" onClick={handleStart} sx={{ mt: 3, ml: 1 }}>
+              На початок
+            </Button>
           </React.Fragment>
         ) : (
           <React.Fragment>
@@ -121,9 +120,6 @@ export default function CreatePage() {
                   Назад
                 </Button>
               )}
-              <Button onClick={handleGetFile} sx={{ mt: 3, ml: 1 }}>
-                Get server file
-              </Button>
 
               {activeStep === steps.length - 1 ? (
                 <Button variant="contained" onClick={handleSubmit} sx={{ mt: 3, ml: 1 }}>

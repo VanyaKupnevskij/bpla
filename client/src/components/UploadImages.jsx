@@ -15,6 +15,8 @@ export default function UploadImages() {
   }, [files, previews]);
 
   const selectFile = (event) => {
+    if (event.target.files.length === 0) return;
+
     setFiles((prev) => [event.target.files[0], ...prev]);
     setPreviews((prev) => [URL.createObjectURL(event.target.files[0]), ...prev]);
   };

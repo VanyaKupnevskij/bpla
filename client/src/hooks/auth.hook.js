@@ -20,10 +20,13 @@ export function useAuth() {
     );
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback((isReloadPage = true) => {
     setToken(null);
     setUserId(null);
     localStorage.removeItem(storageName);
+    if (isReloadPage) {
+      window.location.reload();
+    }
   }, []);
 
   useEffect(() => {

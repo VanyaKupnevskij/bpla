@@ -17,7 +17,7 @@ export function useRoutes(isAuthenticated) {
   if (isAuthenticated) {
     return (
       <>
-        <Navbar displaySearch={false} />
+        <Navbar displaySearch={false} displayLogout={true} />
         <Container maxWidth="xl">
           <CssBaseline />
           <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>

@@ -16,8 +16,8 @@ export default function BplaCard({ title, idBpla, preview = noPhoto, children })
   }
 
   return (
-    <Card>
-      <CardActionArea>
+    <Card sx={{ height: '100%' }}>
+      <CardActionArea sx={{ height: 'calc(100% - 3rem)' }}>
         <CardMedia
           onClick={handleClickDetail}
           component="img"
@@ -26,7 +26,14 @@ export default function BplaCard({ title, idBpla, preview = noPhoto, children })
           alt="preview"
           sx={{ objectFit: 'contain', p: 1 }}
         />
-        <CardContent>
+        <CardContent
+          onClick={handleClickDetail}
+          sx={{
+            m: 0.5,
+            maxHeight: '7rem',
+            overflow: 'hidden',
+            border: '1px solid rgba(10, 10, 10, 0.05)',
+          }}>
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>

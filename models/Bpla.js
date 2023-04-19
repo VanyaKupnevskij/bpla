@@ -7,6 +7,7 @@ const schema = new Schema({
   model: { type: String },
   shortDescription: { type: String },
   description: { type: String },
+  sourceUrl: { type: String },
   vendor: { type: String },
   contryVendor: { type: String },
   typeEngine: { type: String },

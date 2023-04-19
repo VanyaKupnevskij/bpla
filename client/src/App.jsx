@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import './App.css';
 
-import 'materialize-css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useRoutes } from './routes';
 import { useAuth } from './hooks/auth.hook';
@@ -8,13 +8,9 @@ import { AuthContext } from './context/context';
 import { ConfigContext } from './context/configContext';
 import { store } from './store/index';
 import { Provider } from 'react-redux';
-import Navbar from './components/Navbar';
 import Loader from './components/Loader';
-import { Container, Paper } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
 
 const themeLight = createTheme({
   palette: {
@@ -35,14 +31,14 @@ const themeDark = createTheme({
       main: '#3f51b5',
     },
     secondary: {
-      main: '#f50057',
+      main: '#e14e31',
     },
   },
 });
 
 function App() {
   const [modeView, setModeView] = useState('light');
-  const { token, login, logout, userId, ready } = useAuth(); // 435345234 - password
+  const { token, login, logout, userId, ready } = useAuth(); // bplaPassAdmin - password; admin123@gmail.com email
   const isAuthenticated = Boolean(token);
   const routes = useRoutes(isAuthenticated);
 

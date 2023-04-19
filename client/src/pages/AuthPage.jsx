@@ -31,7 +31,9 @@ export default function SignIn() {
         password: form.get('password'),
       });
       auth.login(data.token, data.userId);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -72,10 +74,6 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
             disabled={loading}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Запам'ятати мене"
           />
           <Button
             type="submit"

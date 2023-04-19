@@ -10,7 +10,7 @@ export default function ListParameters({ datas }) {
     <List disablePadding>
       {listParameters.map((parameter, index) => {
         const backColor = index & 1 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(10, 10, 10, 0.05)';
-        let value = '---';
+        let value = '';
         if (parameter.type === 'MultipleSelect') {
           if (datas[parameter.name].length !== 0) {
             value = datas[parameter.name].map((item) => <div key={item}>{item}</div>);
@@ -20,8 +20,11 @@ export default function ListParameters({ datas }) {
         }
 
         return (
-          <ListItem key={parameter.name} sx={{ py: 1, px: 1, background: backColor }}>
-            <ListItemText primary={parameter.label ?? parameter.title} />
+          <ListItem
+            key={parameter.name}
+            alignItems="flex-start"
+            sx={{ py: 1, px: 1, background: backColor }}>
+            <ListItemText primary={parameter.label ?? parameter.title} sx />
             <Typography variant="body2" sx={{ maxWidth: '70%' }}>
               {value}
             </Typography>

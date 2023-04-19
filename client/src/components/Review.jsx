@@ -20,7 +20,7 @@ export default function Review() {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <ImagesCarousel images={states.current.images} />
       </div>
-      <TableParameters states={states.current} />
+      <TableParameters datas={states.current} />
     </>
   );
 }

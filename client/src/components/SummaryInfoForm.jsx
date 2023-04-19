@@ -22,6 +22,7 @@ function RenderListOptions({ descriptions }) {
             name={item.name}
             label={item.label}
             placeholder={item.placeholder}
+            multiline={item.isMultiline}
           />
         );
 
