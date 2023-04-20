@@ -1,9 +1,11 @@
 const { Router } = require('express');
-const Bpla = require('../models/Bpla');
+const { Bpla } = require('../models/Bpla');
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
+    const {} = req.query;
+
     const allBpla = await Bpla.find({});
 
     if (!allBpla) {

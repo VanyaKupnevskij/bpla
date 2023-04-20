@@ -1,20 +1,20 @@
 const { Schema, model } = require('mongoose');
 
-const schema = new Schema({
+let schemaBpla = new Schema({
   date: { type: Date, default: Date.now },
   photos: [{ type: String }],
   _name: { type: String, required: true, unique: true },
-  model: { type: String },
-  shortDescription: { type: String },
-  description: { type: String },
-  sourceUrl: { type: String },
-  vendor: { type: String },
-  contryVendor: { type: String },
-  typeEngine: { type: String },
+  model: { type: String, default: '' },
+  shortDescription: { type: String, default: '' },
+  description: { type: String, default: '' },
+  sourceUrl: { type: String, default: '' },
+  vendor: { type: String, default: '' },
+  contryVendor: { type: String, default: '' },
+  typeEngine: { type: String, default: '' },
   functions: [{ type: String }],
   levelsApply: [{ type: String }],
-  levelWarActions: { type: String },
-  _class: { type: String },
+  levelWarActions: { type: String, default: '' },
+  _class: { type: String, default: '' },
   flightRange: { type: Number, default: 0 },
   wingspan: { type: Number, default: 0 },
   maxFlyWeight: { type: Number, default: 0 },
@@ -26,4 +26,4 @@ const schema = new Schema({
   flyDuration: { type: Number, default: 0 },
 });
 
-module.exports = model('Bpla', schema);
+module.exports = { Bpla: model('Bpla', schemaBpla), schemaBpla };
