@@ -14,6 +14,7 @@ const listParameters = [
     name: '_name',
     label: 'Назва',
     placeholder: 'Назва БПЛА...',
+    isFilter: false,
   },
   {
     type: 'TextInput',
@@ -22,6 +23,7 @@ const listParameters = [
     name: 'model',
     label: 'Модель',
     placeholder: 'Модель БПЛА...',
+    isFilter: false,
   },
   {
     type: 'TextInput',
@@ -30,6 +32,7 @@ const listParameters = [
     name: 'shortDescription',
     label: 'Короткий опис',
     placeholder: 'Короткий опис БПЛА...',
+    isFilter: false,
   },
   {
     type: 'TextInput',
@@ -38,6 +41,7 @@ const listParameters = [
     name: 'description',
     label: 'Детальний опис загальньої інформації',
     placeholder: 'Опис...',
+    isFilter: false,
   },
   {
     type: 'TextInput',
@@ -46,6 +50,7 @@ const listParameters = [
     name: 'sourceUrl',
     label: 'Посилання на джерело',
     placeholder: 'Джерело...',
+    isFilter: false,
   },
   {
     type: 'TextInput',
@@ -54,6 +59,7 @@ const listParameters = [
     name: 'vendor',
     label: 'Виробник',
     placeholder: 'Виробник БПЛА...',
+    isFilter: true,
   },
   {
     type: 'SelectInput',

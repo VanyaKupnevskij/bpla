@@ -51,13 +51,20 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ModeSwitch() {
-  const { setModeView } = React.useContext(ConfigContext);
+  const { setModeView, modeView } = React.useContext(ConfigContext);
 
   function handlerModeSwitch(event) {
-    setModeView(event.target.checked ? 'dark' : 'light');
+    const newMode = event.target.checked ? 'dark' : 'light';
+    setModeView(newMode);
+    localStorage.setItem('themeMode', newMode);
   }
 
+  console.log(modeView);
   return (
-    <FormControlLabel sx={{ m: 0 }} control={<MaterialUISwitch />} onChange={handlerModeSwitch} />
+    <FormControlLabel
+      sx={{ m: 0 }}
+      control={<MaterialUISwitch value={modeView == 'dark'} defaultChecked={modeView == 'dark'} />}
+      onChange={handlerModeSwitch}
+    />
   );
 }

@@ -5,7 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function Sort() {
-  const [sort, setSort] = React.useState('name');
+  const [sort, setSort] = React.useState('_name');
 
   const handleChange = (event) => {
     setSort(event.target.value);
@@ -20,9 +20,9 @@ export default function Sort() {
         value={sort}
         label="Сортування"
         onChange={handleChange}>
-        <MenuItem value={'name'}>Назва</MenuItem>
-        <MenuItem value={'popular'}>Популярність</MenuItem>
-        <MenuItem value={'weight'}>Вага</MenuItem>
+        <MenuItem value={'_name'}>По назві</MenuItem>
+        <MenuItem value={'maxFlyWeight'}>За злітною масою</MenuItem>
+        <MenuItem value={'flyDuration'}>За тривалістю польоту</MenuItem>
       </Select>
     </FormControl>
   );

@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom';
 import ImagesCarousel from '../components/ImagesCarousel';
 import TableParameters from '../components/TableParameters';
 import useBplaServer from '../hooks/bplaServer.hook';
-import { Checkbox, Container, FormControlLabel, FormGroup } from '@mui/material';
+import { Container } from '@mui/material';
 import RadarChart from '../components/RadarChart';
+import Loader from '../components/Loader';
 
 export default function DetailPage() {
   const [data, setData] = useState(null);
@@ -55,28 +56,8 @@ export default function DetailPage() {
     return values;
   }
 
-  function getCheckboxes(values) {
-    if (!values) return;
-
-    const handleChange = (event, index) => {
-      values[index].enabled = event.target.checked;
-      setChartValues([...values]);
-    };
-
-    return (
-      <FormGroup>
-        {values.map((value, index) => {
-          return (
-            <FormControlLabel
-              key={value.label}
-              control={<Checkbox defaultChecked={value.enabled} />}
-              label={value.label}
-              onChange={(event) => handleChange(event, index)}
-            />
-          );
-        })}
-      </FormGroup>
-    );
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (

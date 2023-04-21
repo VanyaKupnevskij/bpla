@@ -23,25 +23,25 @@ export default function MainPage() {
       <Box sx={{ display: 'flex', p: 3, gap: 1 }}>
         <Button
           variant="contained"
-          color="info"
           onClick={handleClickFilters}
           sx={{
+            px: 3,
             flexGrow: { xs: 1, sm: 0 },
             display: { xs: 'block', sm: 'block', md: 'none', lg: 'none', xl: 'none' },
           }}>
           Фільтри
         </Button>
-        <Box sx={{ width: { xs: 'auto', sm: 200 }, ml: 'auto', flexGrow: { xs: 1, sm: 0 } }}>
+        <Box sx={{ width: { xs: 'auto', sm: 240 }, ml: 'auto', flexGrow: { xs: 1, sm: 0 } }}>
           <Sort />
         </Box>
       </Box>
       <Box sx={{ display: 'flex' }}>
         <Filters isDrawer={openFilters} handleClickClose={handleClickClose} />
-        <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, p: 3, pt: 0 }}>
+        <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, px: 3, pt: 0 }}>
           <ListCards
             sx={{
               overflow: 'auto',
-              height: 'calc(100vh - 15.5rem)',
+              height: 'calc(100vh - 14.5rem)',
             }}
           />
           <Paginator />

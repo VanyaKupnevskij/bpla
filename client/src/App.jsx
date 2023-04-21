@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -41,6 +41,10 @@ function App() {
   const { token, login, logout, userId, ready } = useAuth(); // bplaPassAdmin - password; admin123@gmail.com email
   const isAuthenticated = Boolean(token);
   const routes = useRoutes(isAuthenticated);
+
+  useEffect(() => {
+    setModeView(localStorage.getItem('themeMode') ?? 'light');
+  }, []);
 
   if (ready === false) {
     return <Loader />;

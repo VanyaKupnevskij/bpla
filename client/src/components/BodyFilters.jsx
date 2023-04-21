@@ -2,6 +2,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
+  Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -16,21 +18,28 @@ import TextInput from './TextInput';
 export default function BodyFilters() {
   return (
     <>
+      <Button variant="contained" fullWidth>
+        Застосувати фільтри
+      </Button>
       {listParameters.map((item, index) => {
         switch (item.type) {
-          //   case 'TextInput':
-          //     return (
-          //       <TextInput
-          //         key={item.name}
-          //         sm={index <= 1 ? 6 : 12}
-          //         required={item.required}
-          //         id={item.name}
-          //         name={item.name}
-          //         label={item.label}
-          //         placeholder={item.placeholder}
-          //         multiline={item.isMultiline}
-          //       />
-          //     );
+          case 'TextInput':
+            if (!item.isFilter) return null;
+
+            return (
+              <Box my={2} key={item.name}>
+                <Typography variant="body1">Пошук за: {item.label.toLowerCase()}</Typography>
+                <TextInput
+                  sm={12}
+                  required={item.required}
+                  id={item.name}
+                  name={item.name}
+                  label={item.label}
+                  placeholder={item.placeholder}
+                  multiline={item.isMultiline}
+                />
+              </Box>
+            );
 
           case 'MultipleSelect':
           case 'SelectInput':
@@ -53,8 +62,8 @@ export default function BodyFilters() {
             return (
               <Accordion key={item.name}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} id={item.name}>
-                  <item.icon sx={{ mr: 1.5 }} />
-                  <Typography>{item.title}</Typography>
+                  <item.icon />
+                  <Typography sx={{ ml: 1.5 }}>{item.title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <DoubleSlider
@@ -68,47 +77,6 @@ export default function BodyFilters() {
             );
         }
       })}
-      {/* <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header">
-          <Typography>Призначення</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            <FormControlLabel control={<Checkbox />} label="Розвідувальний" />
-            <FormControlLabel disabled control={<Checkbox />} label="Космічний" />
-          </FormGroup>
-        </AccordionDetails>
-      </Accordion> 
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header">
-          <Typography>Вага</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            <FormControlLabel control={<Checkbox />} label="300 кг" />
-            <FormControlLabel control={<Checkbox />} label="10 тон" />
-            <FormControlLabel control={<Checkbox />} label="20 тон" />
-            <FormControlLabel control={<Checkbox />} label="40+ тон" />
-          </FormGroup>
-        </AccordionDetails>
-      </Accordion>*/}
-      {/* <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header">
-          <Typography>Дістанція польоту</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <DoubleSlider />
-        </AccordionDetails>
-      </Accordion> */}
     </>
   );
 }
