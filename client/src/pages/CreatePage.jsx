@@ -59,10 +59,10 @@ export default function CreatePage() {
 
       if (Array.isArray(value)) {
         for (let item of value) {
-          formData.current.append(String(key), item);
+          formData.current.append(String(key), item ?? '');
         }
       } else {
-        formData.current.append(String(key), value);
+        formData.current.append(String(key), value ?? '');
       }
     }
 

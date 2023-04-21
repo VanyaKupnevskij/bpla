@@ -6,6 +6,7 @@ export function useAuth() {
   const [ready, setReady] = useState(false);
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const isAuthenticated = Boolean(token);
 
   const login = useCallback((jwtToken, id) => {
     setToken(jwtToken);
@@ -38,5 +39,5 @@ export function useAuth() {
     setReady(true);
   }, [login]);
 
-  return { login, logout, token, userId, ready };
+  return { login, logout, token, userId, ready, isAuthenticated };
 }

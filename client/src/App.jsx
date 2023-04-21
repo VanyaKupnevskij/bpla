@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './App.css';
 
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -10,41 +9,13 @@ import { store } from './store/index';
 import { Provider } from 'react-redux';
 import Loader from './components/Loader';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const themeLight = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#3f51b5',
-    },
-    secondary: {
-      main: '#eb9a2a',
-    },
-  },
-});
-
-const themeDark = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#3f51b5',
-    },
-    secondary: {
-      main: '#e14e31',
-    },
-  },
-});
+import { ThemeProvider } from '@mui/material/styles';
+import useTheme from './hooks/theme.hook';
 
 function App() {
-  const [modeView, setModeView] = useState('light');
-  const { token, login, logout, userId, ready } = useAuth(); // bplaPassAdmin - password; admin123@gmail.com email
-  const isAuthenticated = Boolean(token);
+  const { token, login, logout, userId, ready, isAuthenticated } = useAuth(); // bplaPassAdmin - password; admin123@gmail.com email
   const routes = useRoutes(isAuthenticated);
-
-  useEffect(() => {
-    setModeView(localStorage.getItem('themeMode') ?? 'light');
-  }, []);
+  const { themeDark, themeLight, modeView, setModeView } = useTheme();
 
   if (ready === false) {
     return <Loader />;

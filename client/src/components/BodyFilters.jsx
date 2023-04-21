@@ -21,7 +21,7 @@ export default function BodyFilters() {
       <Button variant="contained" fullWidth>
         Застосувати фільтри
       </Button>
-      {listParameters.map((item, index) => {
+      {listParameters.map((item) => {
         switch (item.type) {
           case 'TextInput':
             if (!item.isFilter) return null;
