@@ -1,14 +1,22 @@
 import * as React from 'react';
 import Slider from '@mui/material/Slider';
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  OutlinedInput,
+  Typography,
+} from '@mui/material';
 
 function valuetext(value) {
-  return `${value}°C`;
+  return `${value}`;
 }
 
 const minDistance = 10;
 
-export default function DoubleSlider() {
-  const [value, setValue] = React.useState([0, 100]);
+export default function DoubleSlider({ min = 0, max = 100, step = 10, countMarkBase = 5 }) {
+  const [value, setValue] = React.useState([min, max]);
 
   const handleChange = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
@@ -17,7 +25,7 @@ export default function DoubleSlider() {
 
     if (newValue[1] - newValue[0] < minDistance) {
       if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 100 - minDistance);
+        const clamped = Math.min(newValue[0], max - minDistance);
         setValue([clamped, clamped + minDistance]);
       } else {
         const clamped = Math.max(newValue[1], minDistance);
@@ -29,13 +37,54 @@ export default function DoubleSlider() {
   };
 
   return (
-    <Slider
-      getAriaLabel={() => 'Minimum distance shift'}
-      value={value}
-      onChange={handleChange}
-      valueLabelDisplay="auto"
-      getAriaValueText={valuetext}
-      disableSwap
-    />
+    <>
+      <Box sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <FormControl
+          sx={{ width: '7rem', display: 'inline-block' }}
+          variant="outlined"
+          size="small">
+          <OutlinedInput
+            id="outlined-adornment-weight"
+            endAdornment={<InputAdornment position="end">км</InputAdornment>}
+            aria-describedby="outlined-weight-helper-text"
+            value={value[0]}
+            onChange={(event) => handleChange(event, [event.target.value, value[1]], 0)}
+            inputProps={{
+              'aria-label': 'км',
+            }}
+          />
+          <FormHelperText id="outlined-weight-helper-text">Від</FormHelperText>
+        </FormControl>
+
+        <Typography sx={{ pb: 3 }}>-</Typography>
+        <FormControl
+          sx={{ width: '7rem', display: 'inline-block' }}
+          variant="outlined"
+          size="small">
+          <OutlinedInput
+            id="outlined-adornment-weight"
+            endAdornment={<InputAdornment position="end">км</InputAdornment>}
+            aria-describedby="outlined-weight-helper-text"
+            value={value[1]}
+            onChange={(event) => handleChange(event, [value[0], event.target.value], 1)}
+            inputProps={{
+              'aria-label': 'км',
+            }}
+          />
+          <FormHelperText id="outlined-weight-helper-text">До</FormHelperText>
+        </FormControl>
+      </Box>
+      <Slider
+        getAriaLabel={() => 'Minimum distance shift'}
+        value={value}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        getAriaValueText={valuetext}
+        disableSwap
+        min={min}
+        max={max}
+        step={step}
+      />
+    </>
   );
 }
