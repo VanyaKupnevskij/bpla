@@ -26,9 +26,9 @@ export default function useBplaServer() {
       });
   }
 
-  function getBplas() {
+  function getBplas(query = '') {
     setIsLoading(true);
-    return http.get('/bpla').then((res) => {
+    return http.get('/bpla' + query).then((res) => {
       setIsLoading(false);
       return res.data;
     });

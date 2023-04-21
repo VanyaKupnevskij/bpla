@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import BplaCard from './BplaCard';
 
 import Grid from '@mui/material/Grid';
 import useBplaServer from '../hooks/bplaServer.hook';
 import { Typography } from '@mui/material';
 import Loader from './Loader';
+import { QueryContext } from '../context/queryContext';
 
 export default function ListCards({ sx }) {
   const [bplas, setBplas] = useState([]);
   const { getBplas, isLoading } = useBplaServer();
+  const { query } = useContext(QueryContext);
 
   async function getListBpla() {
-    setBplas(await getBplas());
+    setBplas(await getBplas(query));
   }
 
   useEffect(() => {
