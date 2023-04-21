@@ -4,7 +4,7 @@ import BplaCard from './BplaCard';
 import Grid from '@mui/material/Grid';
 import useBplaServer from '../hooks/bplaServer.hook';
 
-export default function ListCards() {
+export default function ListCards({ sx }) {
   const [bplas, setBplas] = useState([]);
   const { getBplas } = useBplaServer();
 
@@ -21,13 +21,7 @@ export default function ListCards() {
   }, []);
 
   return (
-    <Grid
-      container
-      spacing={1}
-      sx={{
-        overflow: 'auto',
-        height: 'calc(100vh - 12rem)',
-      }}>
+    <Grid container spacing={1} sx={sx}>
       {bplas.map((bpla) => (
         <Grid item xs={12} sm={6} md={6} lg={3} xl={4} key={bpla._id}>
           <BplaCard

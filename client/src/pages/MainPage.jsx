@@ -5,6 +5,7 @@ import ListCards from '../components/ListCards';
 import Filters from '../components/Filters';
 import { useState } from 'react';
 import Sort from '../components/Sort';
+import Paginator from '../components/Paginator';
 
 export default function MainPage() {
   const [openFilters, setOpenFilters] = useState(false);
@@ -37,7 +38,13 @@ export default function MainPage() {
       <Box sx={{ display: 'flex' }}>
         <Filters isDrawer={openFilters} handleClickClose={handleClickClose} />
         <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, p: 3, pt: 0 }}>
-          <ListCards />
+          <ListCards
+            sx={{
+              overflow: 'auto',
+              height: 'calc(100vh - 15.5rem)',
+            }}
+          />
+          <Paginator />
         </Box>
       </Box>
     </Box>

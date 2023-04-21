@@ -21,6 +21,7 @@ export default function Paginator() {
       page={page}
       onPageChange={handleChangePage}
       rowsPerPage={rowsPerPage}
+      labelRowsPerPage="Єлементів на сторінці:"
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
   );
