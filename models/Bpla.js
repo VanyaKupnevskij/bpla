@@ -26,4 +26,12 @@ let schemaBpla = new Schema({
   flyDuration: { type: Number, default: 0 },
 });
 
-module.exports = { Bpla: model('Bpla', schemaBpla), schemaBpla };
+schemaBpla.index({ _name: 'text', model: 'text', shortDescription: 'text', description: 'text' });
+
+const Bpla = model('Bpla', schemaBpla);
+
+Bpla.createIndexes()
+  .then(() => console.log('Index created successfully'))
+  .catch((error) => console.log(error));
+
+module.exports = { Bpla, schemaBpla };

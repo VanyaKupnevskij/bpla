@@ -4,15 +4,70 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const {} = req.query;
+    const rangeParams = [];
+    const valueParams = [];
 
-    const allBpla = await Bpla.find({});
+    for (let key in req.query) {
+      if (key.includes('_min')) {
+        const name = key.replace('_min', '');
+        const min = parseInt(req.query[`${name}_min`]);
+        const max = parseInt(req.query[`${name}_max`]);
 
-    if (!allBpla) {
-      return res.status(404).json({ message: 'БПЛА не існує' });
+        rangeParams.push({ name, min, max });
+      } else if (key.includes('_str')) {
+        const name = key.replace('_str', '');
+        const value = req.query[key];
+        valueParams.push({ name, value });
+      } else if (key.includes('_num')) {
+        const name = key.replace('_num', '');
+        const value = parseInt(req.query[name]);
+        valueParams.push({ name, value });
+      }
     }
 
-    res.json(allBpla);
+    let queryToBD = null;
+
+    if (req.query.text) {
+      queryToBD = Bpla.find({
+        $or: [
+          { name: { $regex: `/${req.query.text}/i` } },
+          { shortDescription: { $regex: `/${req.query.text}/i` } },
+          { description: { $regex: `/${req.query.text}/i` } },
+        ],
+      });
+    } else {
+      queryToBD = Bpla.find();
+    }
+
+    if (rangeParams.length !== 0) {
+      for (let param of rangeParams) {
+        queryToBD.where(param.name).gte(param.min).lte(param.max);
+      }
+    }
+
+    if (valueParams.length !== 0) {
+      for (let param of valueParams) {
+        queryToBD.where(param.name).equals(param.value);
+      }
+    }
+
+    if (req.query.sort) {
+      queryToBD.sort({ [req.query.sort]: parseInt(req.query.order || 1) });
+    } else {
+      queryToBD.sort({ _name: parseInt(req.query.order || 1) });
+    }
+
+    const page = parseInt(req.query.page); // start from 0 page
+    const limit = parseInt(req.query.limit);
+    queryToBD.skip(page * limit ?? 0).limit(limit ?? 8);
+
+    const listBpla = await queryToBD.exec();
+
+    if (!listBpla) {
+      return res.status(404).json({ message: 'БПЛА не знайдені за заданими парараметрами' });
+    }
+
+    res.json(listBpla);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
