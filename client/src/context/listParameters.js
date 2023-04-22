@@ -6,8 +6,8 @@ import SpeedRoundedIcon from '@mui/icons-material/SpeedRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import React from 'react';
 
-const listParameters = [
-  {
+const listParameters = {
+  _name: {
     type: 'TextInput',
     isRequired: true,
     isMultiline: false,
@@ -16,7 +16,7 @@ const listParameters = [
     placeholder: 'Назва БПЛА...',
     isFilter: false,
   },
-  {
+  model: {
     type: 'TextInput',
     isRequired: true,
     isMultiline: false,
@@ -25,7 +25,7 @@ const listParameters = [
     placeholder: 'Модель БПЛА...',
     isFilter: false,
   },
-  {
+  shortDescription: {
     type: 'TextInput',
     isRequired: false,
     isMultiline: true,
@@ -34,7 +34,7 @@ const listParameters = [
     placeholder: 'Короткий опис БПЛА...',
     isFilter: false,
   },
-  {
+  description: {
     type: 'TextInput',
     isRequired: false,
     isMultiline: true,
@@ -43,7 +43,7 @@ const listParameters = [
     placeholder: 'Опис...',
     isFilter: false,
   },
-  {
+  sourceUrl: {
     type: 'TextInput',
     isRequired: false,
     isMultiline: false,
@@ -52,7 +52,7 @@ const listParameters = [
     placeholder: 'Джерело...',
     isFilter: false,
   },
-  {
+  vendor: {
     type: 'TextInput',
     isRequired: false,
     isMultiline: false,
@@ -61,7 +61,7 @@ const listParameters = [
     placeholder: 'Виробник БПЛА...',
     isFilter: true,
   },
-  {
+  contryVendor: {
     type: 'SelectInput',
     title: 'Країна виробник',
     name: 'contryVendor',
@@ -99,7 +99,7 @@ const listParameters = [
       'Швейцарія',
     ],
   },
-  {
+  typeEngine: {
     type: 'SelectInput',
     title: 'Тип двигуна',
     name: 'typeEngine',
@@ -107,7 +107,7 @@ const listParameters = [
     isFilter: true,
     variants: ['Електричний', 'Дізельний', 'Бензиновий'],
   },
-  {
+  functions: {
     type: 'MultipleSelect',
     title: 'Функії',
     name: 'functions',
@@ -126,7 +126,7 @@ const listParameters = [
       'Протидія аматорським БпЛА',
     ],
   },
-  {
+  levelsApply: {
     type: 'MultipleSelect',
     title: 'Рівень застосування',
     name: 'levelsApply',
@@ -134,7 +134,7 @@ const listParameters = [
     isFilter: true,
     variants: ['ТВД', 'Оперативна група', 'Бригада', 'Батальйон', 'Рота', 'Взвод', 'Відділення'],
   },
-  {
+  levelWarActions: {
     type: 'SelectInput',
     title: 'Рівень воєнних дій',
     name: 'levelWarActions',
@@ -148,7 +148,7 @@ const listParameters = [
       'Тактичний підрозділ',
     ],
   },
-  {
+  _class: {
     type: 'SelectInput',
     title: 'Класс',
     name: '_class',
@@ -167,7 +167,7 @@ const listParameters = [
       'Ударні БпЛА',
     ],
   },
-  {
+  flightRange: {
     type: 'NumberSlider',
     title: 'Дальність польоту (км)',
     icon: React.Fragment,
@@ -178,7 +178,7 @@ const listParameters = [
     step: 10,
     countMarkBase: 5,
   },
-  {
+  wingspan: {
     type: 'NumberSlider',
     title: 'Розмах крил (м)',
     icon: FlightRoundedIcon,
@@ -189,7 +189,7 @@ const listParameters = [
     step: 1,
     countMarkBase: 5,
   },
-  {
+  maxFlyWeight: {
     type: 'NumberSlider',
     title: 'Максимальна злітна маса (кг)',
     icon: ScaleRoundedIcon,
@@ -200,7 +200,7 @@ const listParameters = [
     step: 50,
     countMarkBase: 5,
   },
-  {
+  payloadWeight: {
     type: 'NumberSlider',
     title: 'Корисне навантаження (кг)',
     icon: ScaleRoundedIcon,
@@ -211,7 +211,7 @@ const listParameters = [
     step: 10,
     countMarkBase: 5,
   },
-  {
+  maxSpeed: {
     type: 'NumberSlider',
     title: 'Максимальна швидкість (км/год)',
     icon: SpeedRoundedIcon,
@@ -222,7 +222,7 @@ const listParameters = [
     step: 10,
     countMarkBase: 5,
   },
-  {
+  cruiseSpeed: {
     type: 'NumberSlider',
     title: 'Крейсерна швидкість (км/год)',
     icon: SpeedRoundedIcon,
@@ -233,7 +233,7 @@ const listParameters = [
     step: 10,
     countMarkBase: 5,
   },
-  {
+  maxFlyHeight: {
     type: 'NumberSlider',
     title: 'Максимальна висота польоту (км)',
     icon: FlightTakeoffRoundedIcon,
@@ -244,7 +244,7 @@ const listParameters = [
     step: 1,
     countMarkBase: 5,
   },
-  {
+  heightOfUse: {
     type: 'NumberSlider',
     title: 'Операційна висота використання (км)',
     icon: WifiTetheringRoundedIcon,
@@ -255,7 +255,7 @@ const listParameters = [
     step: 1,
     countMarkBase: 5,
   },
-  {
+  flyDuration: {
     type: 'NumberSlider',
     title: 'Тривалість польоту (годин)',
     icon: AccessTimeRoundedIcon,
@@ -266,6 +266,6 @@ const listParameters = [
     step: 1,
     countMarkBase: 5,
   },
-];
+};
 
 export default listParameters;

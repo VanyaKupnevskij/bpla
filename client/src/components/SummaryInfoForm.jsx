@@ -79,7 +79,7 @@ export default function SummaryInfoForm() {
         Загальна інформація
       </Typography>
       <Grid container spacing={3}>
-        <RenderListOptions descriptions={listParameters} />
+        <RenderListOptions descriptions={Object.values(listParameters)} />
       </Grid>
     </>
   );

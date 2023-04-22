@@ -15,14 +15,22 @@ import DoubleSlider from './DoubleSlider';
 import listParameters from '../context/listParameters';
 import TextInput from './TextInput';
 import ListCheckboxes from './ListCheckboxes';
+import { useContext } from 'react';
+import { QueryContext } from '../context/queryContext';
 
 export default function BodyFilters() {
+  const { query } = useContext(QueryContext);
+
+  function handleClickSubmit() {
+    console.log(query.current);
+  }
+
   return (
     <>
-      <Button variant="contained" fullWidth>
+      <Button onClick={handleClickSubmit} variant="contained" fullWidth>
         Застосувати фільтри
       </Button>
-      {listParameters.map((item) => {
+      {Object.values(listParameters).map((item) => {
         switch (item.type) {
           case 'TextInput':
             if (!item.isFilter) return null;
@@ -50,7 +58,7 @@ export default function BodyFilters() {
                   <Typography>{item.title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <ListCheckboxes listData={item.variants} />
+                  <ListCheckboxes name={item.name} listData={item.variants} />
                 </AccordionDetails>
               </Accordion>
             );
@@ -64,6 +72,7 @@ export default function BodyFilters() {
                 </AccordionSummary>
                 <AccordionDetails>
                   <DoubleSlider
+                    name={item.name}
                     min={item.min}
                     max={item.max}
                     step={item.step}

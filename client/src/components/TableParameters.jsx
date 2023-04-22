@@ -8,7 +8,7 @@ import listParameters from '../context/listParameters';
 export default function ListParameters({ datas }) {
   return (
     <List disablePadding>
-      {listParameters.map((parameter, index) => {
+      {Object.values(listParameters).map((parameter, index) => {
         const backColor = index & 1 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(10, 10, 10, 0.05)';
         let value = '';
         if (parameter.type === 'MultipleSelect') {

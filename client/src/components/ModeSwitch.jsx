@@ -59,7 +59,6 @@ export default function ModeSwitch() {
     localStorage.setItem('themeMode', newMode);
   }
 
-  console.log(modeView);
   return (
     <FormControlLabel
       sx={{ m: 0 }}

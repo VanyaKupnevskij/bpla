@@ -1,29 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { QueryContext } from '../context/queryContext';
 
 import listParameters from '../context/listParameters';
 
 export default function useQueryBuilder() {
-  const [query, setQuery] = useState('');
-  const [queriesParameter, setQueriesParameter] = useState({});
+  const query = useRef('');
+  const queriesParameter = useRef({});
 
   useEffect(() => {
     initParameters();
   }, []);
 
-  useEffect(() => {
+  function buildQuery() {
     let resultQueries = [];
-    for (let [key, value] in queriesParameter) {
+    for (let [key, value] of Object.entries(queriesParameter.current)) {
       switch (typeof value) {
-        case String:
-          if (!value) break;
-          resultQueries.push(`${key}=${value}`);
+        case 'object':
+          for (let item of value.values()) {
+            resultQueries.push(`${key}=${item}`);
+          }
           break;
 
-        case Number:
+        case 'number':
           if (
-            (key.includes('_min') && value === listParameters[key].min) ||
-            (key.includes('_max') && value === listParameters[key].max)
+            (key.includes('_min') && value === listParameters[key.replace('_min', '')].min) ||
+            (key.includes('_max') && value === listParameters[key.replace('_max', '')].max)
           )
             break;
 
@@ -33,13 +34,13 @@ export default function useQueryBuilder() {
     }
 
     if (resultQueries.length !== 0) {
-      setQuery('?' + resultQueries.join('&'));
+      query.current = '?' + resultQueries.join('&');
+    } else {
+      query.current = '';
     }
-  }, [queriesParameter]);
+  }
 
   function initParameters() {
-    let tempQueries = [];
-
     // TODO: add limit, sort, text (search), page
     for (let key in listParameters) {
       if (listParameters[key].isFilter) {
@@ -47,40 +48,55 @@ export default function useQueryBuilder() {
           case 'TextInput':
           case 'SelectInput':
           case 'MultipleSelect':
-            tempQueries[key] = '';
+            queriesParameter.current[listParameters[key].name] = new Set();
             break;
           case 'NumberSlider':
-            tempQueries[`${key}_min`] = listParameters[key].min;
-            tempQueries[`${key}_max`] = listParameters[key].max;
+            queriesParameter.current[`${listParameters[key].name}_min`] = listParameters[key].min;
+            queriesParameter.current[`${listParameters[key].name}_max`] = listParameters[key].max;
             break;
         }
       }
     }
-
-    setQueriesParameter(tempQueries);
   }
 
-  function setValue(key, value) {
-    if (!queriesParameter[key]) return;
+  function setItemQuery(key, value, isAppend = true, replaceText = false) {
+    if (queriesParameter.current[key] === undefined) return;
 
-    setQueriesParameter({ ...queriesParameter, [key]: value });
-  }
+    if (typeof value == 'string') {
+      if (value === '') {
+        queriesParameter.current[key].clear();
+      } else {
+        if (replaceText) {
+          queriesParameter.current[key].clear();
+        }
 
-  function clearValue(key) {
-    if (!queriesParameter[key]) return;
-
-    switch (typeof queriesParameter[key]) {
-      case String:
-        setQueriesParameter({ ...queriesParameter, [key]: '' });
-        break;
-      case Number:
-        setQueriesParameter({
-          ...queriesParameter,
-          [`${key}_min`]: listParameters[key].min,
-          [`${key}_max`]: listParameters[key].max,
-        });
-        break;
+        if (isAppend) {
+          queriesParameter.current[key].add(value);
+        } else {
+          queriesParameter.current[key].delete(value);
+        }
+      }
+    } else if (typeof value == 'number') {
+      queriesParameter.current[key] = value;
     }
+
+    buildQuery();
+  }
+
+  function clearItemQuery(key) {
+    // if (!queriesParameter[key] ?? false) return;
+    // switch (typeof queriesParameter[key]) {
+    //   case String:
+    //     setQueriesParameter({ ...queriesParameter, [key]: new Set() });
+    //     break;
+    //   case Number:
+    //     setQueriesParameter({
+    //       ...queriesParameter,
+    //       [`${key}_min`]: listParameters[key].min,
+    //       [`${key}_max`]: listParameters[key].max,
+    //     });
+    //     break;
+    // }
   }
 
   function QueryProvider({ children }) {
@@ -88,11 +104,13 @@ export default function useQueryBuilder() {
       <QueryContext.Provider
         value={{
           query,
+          setItemQuery,
+          clearItemQuery,
         }}>
         {children}
       </QueryContext.Provider>
     );
   }
 
-  return { query, setValue, clearValue, QueryProvider };
+  return { query, setItemQuery, clearItemQuery, QueryProvider };
 }

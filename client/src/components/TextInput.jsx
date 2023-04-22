@@ -3,6 +3,7 @@ import { FormContext } from '../context/formContext';
 
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import { QueryContext } from '../context/queryContext';
 
 export default function TextInput({
   id,
@@ -18,10 +19,15 @@ export default function TextInput({
 }) {
   const { states } = useContext(FormContext);
   const [value, setValue] = useState(states.current[name]);
+  const { setItemQuery } = useContext(QueryContext);
 
-  const handleChange = (event) => {
+  function handleBlur() {
+    setItemQuery(name, value, true, true);
+  }
+
+  function handleChange(event) {
     setValue(event.target.value);
-  };
+  }
 
   useEffect(() => {
     states.current[name] = value;
@@ -36,6 +42,7 @@ export default function TextInput({
         value={value}
         name={name}
         onChange={handleChange}
+        onBlur={handleBlur}
         placeholder={placeholder}
         multiline={multiline}
         fullWidth

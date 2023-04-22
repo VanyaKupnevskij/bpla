@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material';
+import { QueryContext } from '../context/queryContext';
 
 function valuetext(value) {
   return `${value}`;
@@ -15,11 +16,16 @@ function valuetext(value) {
 
 const minDistance = 10;
 
-export default function DoubleSlider({ min = 0, max = 100, step = 10, countMarkBase = 5 }) {
+export default function DoubleSlider({ name, min = 0, max = 100, step = 10, countMarkBase = 5 }) {
   const [value, setValue] = React.useState([min, max]);
+  const { setItemQuery } = React.useContext(QueryContext);
 
   const handleChange = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
+    if (
+      !Array.isArray(newValue) ||
+      !Number.isInteger(newValue[0]) ||
+      !Number.isInteger(newValue[1])
+    ) {
       return;
     }
 
@@ -27,12 +33,21 @@ export default function DoubleSlider({ min = 0, max = 100, step = 10, countMarkB
       if (activeThumb === 0) {
         const clamped = Math.min(newValue[0], max - minDistance);
         setValue([clamped, clamped + minDistance]);
+
+        setItemQuery(name + '_min', clamped);
+        setItemQuery(name + '_max', clamped + minDistance);
       } else {
         const clamped = Math.max(newValue[1], minDistance);
         setValue([clamped - minDistance, clamped]);
+
+        setItemQuery(name + '_min', clamped - minDistance);
+        setItemQuery(name + '_max', clamped);
       }
     } else {
       setValue(newValue);
+
+      setItemQuery(name + '_min', newValue[0]);
+      setItemQuery(name + '_max', newValue[1]);
     }
   };
 
@@ -48,7 +63,7 @@ export default function DoubleSlider({ min = 0, max = 100, step = 10, countMarkB
             endAdornment={<InputAdornment position="end">км</InputAdornment>}
             aria-describedby="outlined-weight-helper-text"
             value={value[0]}
-            onChange={(event) => handleChange(event, [event.target.value, value[1]], 0)}
+            onChange={(event) => handleChange(event, [parseInt(event.target.value), value[1]], 0)}
             inputProps={{
               'aria-label': 'км',
             }}
@@ -66,7 +81,7 @@ export default function DoubleSlider({ min = 0, max = 100, step = 10, countMarkB
             endAdornment={<InputAdornment position="end">км</InputAdornment>}
             aria-describedby="outlined-weight-helper-text"
             value={value[1]}
-            onChange={(event) => handleChange(event, [value[0], event.target.value], 1)}
+            onChange={(event) => handleChange(event, [value[0], parseInt(event.target.value)], 1)}
             inputProps={{
               'aria-label': 'км',
             }}

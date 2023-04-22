@@ -13,7 +13,7 @@ export default function ListCards({ sx }) {
   const { query } = useContext(QueryContext);
 
   async function getListBpla() {
-    setBplas(await getBplas(query));
+    setBplas(await getBplas(query.current));
   }
 
   useEffect(() => {
