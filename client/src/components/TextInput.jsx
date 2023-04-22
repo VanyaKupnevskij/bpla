@@ -22,7 +22,7 @@ export default function TextInput({
   const { setItemQuery } = useContext(QueryContext);
 
   function handleBlur() {
-    setItemQuery(name, value, true, true);
+    setItemQuery(name, value.trim(), true, true);
   }
 
   function handleChange(event) {

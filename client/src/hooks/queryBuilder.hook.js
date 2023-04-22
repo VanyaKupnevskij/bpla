@@ -18,7 +18,7 @@ export default function useQueryBuilder() {
       switch (typeof value) {
         case 'object':
           for (let item of value.values()) {
-            resultQueries.push(`${key}=${item}`);
+            resultQueries.push(`${key}_str=${item}`);
           }
           break;
 

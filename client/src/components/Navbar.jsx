@@ -40,6 +40,13 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
     submit();
   }
 
+  function handleKeyPress(event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      handleClickSearch();
+    }
+  }
+
   function handleClickHome() {
     navigate('/');
   }
@@ -91,6 +98,7 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
                   sx={{ ml: 1, flex: 1 }}
                   value={searchValue}
                   onChange={handleChangeSearch}
+                  onKeyDown={handleKeyPress}
                   placeholder="Пошук БПЛА..."
                   inputProps={{ 'aria-label': 'search bpla' }}
                 />

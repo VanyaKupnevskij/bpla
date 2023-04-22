@@ -4,6 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import listParameters from '../context/listParameters';
+import { Link } from '@mui/material';
 
 export default function ListParameters({ datas }) {
   return (
@@ -25,9 +26,15 @@ export default function ListParameters({ datas }) {
             alignItems="flex-start"
             sx={{ py: 1, px: 1, background: backColor }}>
             <ListItemText primary={parameter.label ?? parameter.title} />
-            <Typography variant="caption" sx={{ maxWidth: '70%' }}>
-              {value}
-            </Typography>
+            {parameter.name === 'sourceUrl' && value !== '---' ? (
+              <Link href={value} target="_blank" variant="caption" sx={{ maxWidth: '70%' }}>
+                {value}
+              </Link>
+            ) : (
+              <Typography variant="caption" sx={{ maxWidth: '70%' }}>
+                {value}
+              </Typography>
+            )}
           </ListItem>
         );
       })}
