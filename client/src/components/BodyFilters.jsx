@@ -19,10 +19,16 @@ import { useContext } from 'react';
 import { QueryContext } from '../context/queryContext';
 
 export default function BodyFilters() {
-  const { query } = useContext(QueryContext);
+  const { query, submit, clearQuery } = useContext(QueryContext);
 
   function handleClickSubmit() {
     console.log(query.current);
+    submit();
+  }
+
+  function handleClickReset() {
+    clearQuery();
+    submit();
   }
 
   return (
@@ -30,6 +36,11 @@ export default function BodyFilters() {
       <Button onClick={handleClickSubmit} variant="contained" fullWidth>
         Застосувати фільтри
       </Button>
+
+      <Button onClick={handleClickReset} variant="text" color="error" fullWidth sx={{ mt: 2.5 }}>
+        Скинути фільтри
+      </Button>
+
       {Object.values(listParameters).map((item) => {
         switch (item.type) {
           case 'TextInput':

@@ -10,7 +10,7 @@ import { QueryContext } from '../context/queryContext';
 export default function ListCards({ sx }) {
   const [bplas, setBplas] = useState([]);
   const { getBplas, isLoading } = useBplaServer();
-  const { query } = useContext(QueryContext);
+  const { query, onChange } = useContext(QueryContext);
 
   async function getListBpla() {
     setBplas(await getBplas(query.current));
@@ -18,6 +18,7 @@ export default function ListCards({ sx }) {
 
   useEffect(() => {
     getListBpla();
+    onChange.current = getListBpla;
   }, []);
 
   if (isLoading) {
@@ -26,7 +27,7 @@ export default function ListCards({ sx }) {
 
   if (bplas.length === 0) {
     return (
-      <Typography variant="h4" color="Highlight" container textAlign="center" sx={sx}>
+      <Typography variant="h4" color="Highlight" textAlign="center" sx={sx}>
         За заданними параметрами не знайдено жодного БпЛА :(
       </Typography>
     );

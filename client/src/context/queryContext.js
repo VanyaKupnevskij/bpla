@@ -1,10 +1,14 @@
 import { createContext } from 'react';
 
 function setItemQuery(key, value) {}
-function clearItemQuery(key) {}
+function clearQuery() {}
+function onChange() {}
+function submit() {}
 
 export const QueryContext = createContext({
   query: '',
   setItemQuery: setItemQuery,
-  clearItemQuery: clearItemQuery,
+  clearQuery: clearQuery,
+  onChange: onChange,
+  submit: submit,
 });

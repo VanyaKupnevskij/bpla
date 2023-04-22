@@ -11,9 +11,13 @@ router.get('/', async (req, res) => {
       if (key.includes('_min')) {
         const name = key.replace('_min', '');
         const min = parseInt(req.query[`${name}_min`]);
+
+        rangeParams.push({ name, min });
+      } else if (key.includes('_max')) {
+        const name = key.replace('_max', '');
         const max = parseInt(req.query[`${name}_max`]);
 
-        rangeParams.push({ name, min, max });
+        rangeParams.push({ name, max });
       } else if (key.includes('_str')) {
         const name = key.replace('_str', '');
         const value = req.query[key];
@@ -28,6 +32,7 @@ router.get('/', async (req, res) => {
     let queryToBD = null;
 
     if (req.query.text) {
+      console.log(req.query.text);
       queryToBD = Bpla.find({
         $or: [
           { name: { $regex: `/${req.query.text}/i` } },
@@ -41,7 +46,11 @@ router.get('/', async (req, res) => {
 
     if (rangeParams.length !== 0) {
       for (let param of rangeParams) {
-        queryToBD.where(param.name).gte(param.min).lte(param.max);
+        if (param.min) {
+          queryToBD.where(param.name).gte(param.min);
+        } else if (param.max) {
+          queryToBD.where(param.name).lte(param.max);
+        }
       }
     }
 
@@ -57,9 +66,9 @@ router.get('/', async (req, res) => {
       queryToBD.sort({ _name: parseInt(req.query.order || 1) });
     }
 
-    const page = parseInt(req.query.page); // start from 0 page
-    const limit = parseInt(req.query.limit);
-    queryToBD.skip(page * limit ?? 0).limit(limit ?? 8);
+    const page = parseInt(req.query.page ?? 0); // start from 0 page
+    const limit = parseInt(req.query.limit ?? 8);
+    queryToBD.skip(page * limit ?? 0).limit(limit);
 
     const listBpla = await queryToBD.exec();
 

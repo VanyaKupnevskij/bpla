@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -12,13 +12,33 @@ import SearchIcon from '@mui/icons-material/Search';
 import ModeSwitch from './ModeSwitch';
 import FormGroup from '@mui/material/FormGroup';
 import LogoutIcon from '@mui/icons-material/Logout';
+import CloseIcon from '@mui/icons-material/Close';
 
 import logoImage from '../images/logo.png';
-import { useAuth } from '../hooks/auth.hook';
+import { QueryContext } from '../context/queryContext';
+import { AuthContext } from '../context/context';
 
 export default function Navbar({ displaySearch = true, displayLogout = false }) {
+  const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout } = useContext(AuthContext);
+  const { submit, setItemQuery } = useContext(QueryContext);
+
+  function handleClickSearch() {
+    setItemQuery('text', searchValue, true, true);
+    submit();
+    navigate('/');
+  }
+
+  function handleChangeSearch(event) {
+    setSearchValue(event.target.value);
+  }
+
+  function handleClickClear() {
+    setSearchValue('');
+    setItemQuery('text', '', true, true);
+    submit();
+  }
 
   function handleClickHome() {
     navigate('/');
@@ -58,13 +78,28 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
                   alignItems: 'center',
                   flexGrow: 1,
                 }}>
+                {searchValue.length > 0 && (
+                  <IconButton
+                    onClick={handleClickClear}
+                    type="button"
+                    sx={{ p: '10px' }}
+                    aria-label="search">
+                    <CloseIcon />
+                  </IconButton>
+                )}
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
+                  value={searchValue}
+                  onChange={handleChangeSearch}
                   placeholder="Пошук БПЛА..."
                   inputProps={{ 'aria-label': 'search bpla' }}
                 />
                 <Tooltip TransitionComponent={Zoom} title="Search">
-                  <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                  <IconButton
+                    onClick={handleClickSearch}
+                    type="button"
+                    sx={{ p: '10px' }}
+                    aria-label="search">
                     <SearchIcon />
                   </IconButton>
                 </Tooltip>
