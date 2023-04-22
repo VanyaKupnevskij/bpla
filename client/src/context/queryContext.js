@@ -3,6 +3,7 @@ import { createContext } from 'react';
 function setItemQuery(key, value) {}
 function clearQuery() {}
 function onChange() {}
+function onReady() {}
 function submit() {}
 
 export const QueryContext = createContext({
@@ -11,4 +12,7 @@ export const QueryContext = createContext({
   clearQuery: clearQuery,
   onChange: onChange,
   submit: submit,
+  onReady: onReady,
+  isReady: false,
+  filteredQueries: {},
 });

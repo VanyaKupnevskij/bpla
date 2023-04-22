@@ -12,7 +12,20 @@ import { Box, Checkbox } from '@mui/material';
 export default function Sort() {
   const [sort, setSort] = React.useState('_name');
   const [order, setOrder] = React.useState(false);
-  const { submit, setItemQuery } = React.useContext(QueryContext);
+  const { submit, filteredQueries, setItemQuery } = React.useContext(QueryContext);
+
+  function handleReadyQuery() {
+    if (filteredQueries.current.order) {
+      setOrder(filteredQueries.current.order === -1);
+    }
+    if (filteredQueries.current.sort_str) {
+      setSort(filteredQueries.current.sort_str);
+    }
+  }
+
+  React.useEffect(() => {
+    setTimeout(handleReadyQuery, 1);
+  }, []);
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
@@ -35,7 +48,7 @@ export default function Sort() {
       <Checkbox
         icon={<KeyboardDoubleArrowDownIcon />}
         checkedIcon={<KeyboardDoubleArrowUpIcon />}
-        value={order}
+        checked={order}
         onChange={handleChangeOrder}
       />
       <FormControl fullWidth>

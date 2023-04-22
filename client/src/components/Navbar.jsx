@@ -25,9 +25,9 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
   const { submit, setItemQuery } = useContext(QueryContext);
 
   function handleClickSearch() {
+    navigate('/');
     setItemQuery('text', searchValue, true, true);
     submit();
-    navigate('/');
   }
 
   function handleChangeSearch(event) {

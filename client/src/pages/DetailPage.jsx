@@ -4,15 +4,22 @@ import { useParams } from 'react-router-dom';
 import ImagesCarousel from '../components/ImagesCarousel';
 import TableParameters from '../components/TableParameters';
 import useBplaServer from '../hooks/bplaServer.hook';
-import { Container } from '@mui/material';
+import { Container, Paper } from '@mui/material';
 import RadarChart from '../components/RadarChart';
 import Loader from '../components/Loader';
+import CssBaseline from '@mui/material/CssBaseline';
+import Navbar from '../components/Navbar';
+
+import useQueryBuilder from '../hooks/queryBuilder.hook';
+import { useFormData } from '../hooks/formData.hook';
 
 export default function DetailPage() {
   const [data, setData] = useState(null);
   const [chartValues, setChartValues] = useState([]);
   const { getBplaId, isLoading } = useBplaServer();
   const bplaId = useParams().id;
+  const { QueryProvider } = useQueryBuilder();
+  const { FormProvider } = useFormData();
 
   async function getBpla() {
     setData(await getBplaId(bplaId));
@@ -61,15 +68,23 @@ export default function DetailPage() {
   }
 
   return (
-    <Container component="main" maxWidth="md">
-      {!isLoading && (
-        <>
-          <ImagesCarousel images={data.photos} />
-          <TableParameters datas={data} />
+    <QueryProvider>
+      <Navbar displaySearch={false} />
+      <Container component="main" maxWidth="md">
+        <CssBaseline />
+        <FormProvider>
+          <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>
+            {!isLoading && (
+              <>
+                <ImagesCarousel images={data.photos} />
+                <TableParameters datas={data} />
 
-          {chartValues.length !== 0 && <RadarChart init={chartValues} />}
-        </>
-      )}
-    </Container>
+                {chartValues.length !== 0 && <RadarChart init={chartValues} />}
+              </>
+            )}
+          </Paper>
+        </FormProvider>
+      </Container>
+    </QueryProvider>
   );
 }

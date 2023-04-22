@@ -36,21 +36,13 @@ export function useRoutes(isAuthenticated) {
 
   return (
     <>
-      <Navbar />
-      <Container maxWidth="xl">
-        <CssBaseline />
-        <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>
-          <FormProvider>
-            <Routes>
-              <Route path="/login" exact element={<AuthPage />} />
-              <Route path="/detail/:id" element={<DetailPage />} />
-              <Route path="/" exact element={<MainPage />} />
+      <Routes>
+        <Route path="/login" exact element={<AuthPage />} />
+        <Route path="/detail/:id" element={<DetailPage />} />
+        <Route path="/" exact element={<MainPage />} />
 
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </FormProvider>
-        </Paper>
-      </Container>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </>
   );
 }

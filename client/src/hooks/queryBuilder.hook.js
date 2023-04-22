@@ -1,24 +1,66 @@
 import { useEffect, useRef } from 'react';
 import { QueryContext } from '../context/queryContext';
+import { useSearchParams } from 'react-router-dom';
 
 import listParameters from '../context/listParameters';
 
 export default function useQueryBuilder() {
+  const [searchParams, setSearchParams] = useSearchParams({});
+
   const query = useRef('');
   const queriesParameter = useRef({});
+  const filteredQueries = useRef({});
+  const onReady = useRef(null);
+  const isReady = useRef(false);
   const onChange = useRef(null);
 
   useEffect(() => {
+    isReady.current = false;
     initParameters();
+    readUrlParams();
   }, []);
 
+  function readUrlParams() {
+    const values = searchParams.entries();
+    for (let [key, value] of values) {
+      if (key.includes('_str')) {
+        key = key.replace('_str', '');
+        queriesParameter.current[key] = new Set([value]);
+      } else {
+        queriesParameter.current[key] = parseInt(value);
+      }
+    }
+    if (values.length !== 0) {
+      buildQuery();
+      isReady.current = true;
+      if (onReady.current) onReady.current();
+    }
+  }
+
   function buildQuery() {
+    const queries = formatedQueries();
+    setQuery(queries);
+  }
+
+  function formatedQueries() {
     let resultQueries = [];
+    const queries = filtringQueries();
+
+    for (let [key, value] of Object.entries(queries)) {
+      resultQueries.push(`${key}=${value}`);
+    }
+
+    return resultQueries;
+  }
+
+  function filtringQueries() {
+    let resultQueries = {};
+
     for (let [key, value] of Object.entries(queriesParameter.current)) {
       switch (typeof value) {
         case 'object':
           for (let item of value.values()) {
-            resultQueries.push(`${key}_str=${item}`);
+            resultQueries[`${key}_str`] = item;
           }
           break;
 
@@ -32,13 +74,19 @@ export default function useQueryBuilder() {
           )
             break;
 
-          resultQueries.push(`${key}=${value}`);
+          resultQueries[key] = value;
           break;
       }
     }
 
-    if (resultQueries.length !== 0) {
-      query.current = '?' + resultQueries.join('&');
+    filteredQueries.current = resultQueries;
+
+    return resultQueries;
+  }
+
+  function setQuery(queries) {
+    if (queries.length !== 0) {
+      query.current = '?' + queries.join('&');
     } else {
       query.current = '';
     }
@@ -98,6 +146,9 @@ export default function useQueryBuilder() {
   }
 
   function submit() {
+    const queries = filtringQueries();
+    setSearchParams({ ...queries });
+
     onChange.current();
   }
 
@@ -110,11 +161,24 @@ export default function useQueryBuilder() {
           clearQuery,
           onChange,
           submit,
+          onReady,
+          isReady,
+          filteredQueries,
         }}>
         {children}
       </QueryContext.Provider>
     );
   }
 
-  return { query, setItemQuery, clearQuery, onChange, submit, QueryProvider };
+  return {
+    query,
+    setItemQuery,
+    clearQuery,
+    onChange,
+    submit,
+    onReady,
+    isReady,
+    filteredQueries,
+    QueryProvider,
+  };
 }

@@ -6,9 +6,17 @@ import Filters from '../components/Filters';
 import { useState } from 'react';
 import Sort from '../components/Sort';
 import Paginator from '../components/Paginator';
+import Navbar from '../components/Navbar';
+import { Container, Paper } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+
+import useQueryBuilder from '../hooks/queryBuilder.hook';
+import { useFormData } from '../hooks/formData.hook';
 
 export default function MainPage() {
   const [openFilters, setOpenFilters] = useState(false);
+  const { QueryProvider } = useQueryBuilder();
+  const { FormProvider } = useFormData();
 
   const handleClickFilters = () => {
     setOpenFilters((prev) => (prev = !prev));
@@ -19,34 +27,42 @@ export default function MainPage() {
   };
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', p: 3, gap: 1 }}>
-        <Button
-          variant="contained"
-          onClick={handleClickFilters}
-          sx={{
-            px: 3,
-            flexGrow: { xs: 1, sm: 0 },
-            display: { xs: 'block', sm: 'block', md: 'none', lg: 'none', xl: 'none' },
-          }}>
-          Фільтри
-        </Button>
-        <Box sx={{ width: { xs: 'auto', sm: 240 }, ml: 'auto', flexGrow: { xs: 1, sm: 0 } }}>
-          <Sort />
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex' }}>
-        <Filters isDrawer={openFilters} handleClickClose={handleClickClose} />
-        <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, px: 3, pt: 0 }}>
-          <ListCards
-            sx={{
-              overflow: 'auto',
-              height: 'calc(100vh - 14.5rem)',
-            }}
-          />
-          <Paginator />
-        </Box>
-      </Box>
-    </Box>
+    <QueryProvider>
+      <Navbar />
+      <Container maxWidth="xl">
+        <CssBaseline />
+        <FormProvider>
+          <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>
+            <Box sx={{ display: 'flex', p: 3, gap: 1 }}>
+              <Button
+                variant="contained"
+                onClick={handleClickFilters}
+                sx={{
+                  px: 3,
+                  flexGrow: { xs: 1, sm: 0 },
+                  display: { xs: 'block', sm: 'block', md: 'none', lg: 'none', xl: 'none' },
+                }}>
+                Фільтри
+              </Button>
+              <Box sx={{ width: { xs: 'auto', sm: 240 }, ml: 'auto', flexGrow: { xs: 1, sm: 0 } }}>
+                <Sort />
+              </Box>
+            </Box>
+            <Box sx={{ display: 'flex' }}>
+              <Filters isDrawer={openFilters} handleClickClose={handleClickClose} />
+              <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, px: 3, pt: 0 }}>
+                <ListCards
+                  sx={{
+                    overflow: 'auto',
+                    height: 'calc(100vh - 14.5rem)',
+                  }}
+                />
+                <Paginator />
+              </Box>
+            </Box>
+          </Paper>
+        </FormProvider>
+      </Container>
+    </QueryProvider>
   );
 }

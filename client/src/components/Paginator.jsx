@@ -5,7 +5,20 @@ import { QueryContext } from '../context/queryContext';
 export default function Paginator() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
-  const { submit, setItemQuery } = React.useContext(QueryContext);
+  const { submit, filteredQueries, setItemQuery } = React.useContext(QueryContext);
+
+  function handleReadyQuery() {
+    if (filteredQueries.current.page) {
+      setPage(filteredQueries.current.page);
+    }
+    if (filteredQueries.current.limit) {
+      setRowsPerPage(filteredQueries.current.limit);
+    }
+  }
+
+  React.useEffect(() => {
+    setTimeout(handleReadyQuery, 1);
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

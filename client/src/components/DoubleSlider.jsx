@@ -18,7 +18,18 @@ const minDistance = 10;
 
 export default function DoubleSlider({ name, min = 0, max = 100, step = 10, countMarkBase = 5 }) {
   const [value, setValue] = React.useState([min, max]);
-  const { setItemQuery } = React.useContext(QueryContext);
+  const { setItemQuery, filteredQueries } = React.useContext(QueryContext);
+
+  function handleReadyQuery() {
+    const minValue = filteredQueries.current[name + '_min'] ?? value[0];
+    const maxValue = filteredQueries.current[name + '_max'] ?? value[1];
+
+    setValue([minValue, maxValue]);
+  }
+
+  React.useEffect(() => {
+    setTimeout(handleReadyQuery, 1);
+  }, []);
 
   const handleChange = (event, newValue, activeThumb) => {
     if (

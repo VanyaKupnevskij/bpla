@@ -10,15 +10,17 @@ import { QueryContext } from '../context/queryContext';
 export default function ListCards({ sx }) {
   const [bplas, setBplas] = useState([]);
   const { getBplas, isLoading } = useBplaServer();
-  const { query, onChange } = useContext(QueryContext);
+  const { query, onReady, isReady, onChange } = useContext(QueryContext);
 
   async function getListBpla() {
+    if (!isReady.current) return;
     setBplas(await getBplas(query.current));
   }
 
   useEffect(() => {
     getListBpla();
     onChange.current = getListBpla;
+    onReady.current = getListBpla;
   }, []);
 
   if (isLoading) {

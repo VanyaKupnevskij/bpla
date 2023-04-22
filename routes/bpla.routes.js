@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         const max = parseInt(req.query[`${name}_max`]);
 
         rangeParams.push({ name, max });
-      } else if (key.includes('_str')) {
+      } else if (key.includes('_str') && key !== 'text_str' && key !== 'sort_str') {
         const name = key.replace('_str', '');
         const value = req.query[key];
         valueParams.push({ name, value });
@@ -31,13 +31,13 @@ router.get('/', async (req, res) => {
 
     let queryToBD = null;
 
-    if (req.query.text) {
-      console.log(req.query.text);
+    if (req.query.text_str) {
+      const regex = new RegExp(`.*${req.query.text_str}.*`, 'i');
       queryToBD = Bpla.find({
         $or: [
-          { name: { $regex: `/${req.query.text}/i` } },
-          { shortDescription: { $regex: `/${req.query.text}/i` } },
-          { description: { $regex: `/${req.query.text}/i` } },
+          { _name: { $regex: regex } },
+          { shortDescription: { $regex: regex } },
+          { description: { $regex: regex } },
         ],
       });
     } else {
@@ -60,8 +60,8 @@ router.get('/', async (req, res) => {
       }
     }
 
-    if (req.query.sort) {
-      queryToBD.sort({ [req.query.sort]: parseInt(req.query.order || 1) });
+    if (req.query.sort_str) {
+      queryToBD.sort({ [req.query.sort_str]: parseInt(req.query.order || 1) });
     } else {
       queryToBD.sort({ _name: parseInt(req.query.order || 1) });
     }
