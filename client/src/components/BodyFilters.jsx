@@ -14,6 +14,7 @@ import DoubleSlider from './DoubleSlider';
 
 import listParameters from '../context/listParameters';
 import TextInput from './TextInput';
+import ListCheckboxes from './ListCheckboxes';
 
 export default function BodyFilters() {
   return (
@@ -49,11 +50,7 @@ export default function BodyFilters() {
                   <Typography>{item.title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {item.variants.map((variant, ind) => (
-                    <FormGroup key={ind}>
-                      <FormControlLabel control={<Checkbox checked />} label={variant} />
-                    </FormGroup>
-                  ))}
+                  <ListCheckboxes listData={item.variants} />
                 </AccordionDetails>
               </Accordion>
             );

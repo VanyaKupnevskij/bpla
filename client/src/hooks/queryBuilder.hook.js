@@ -40,13 +40,14 @@ export default function useQueryBuilder() {
   function initParameters() {
     let tempQueries = [];
 
+    // TODO: add limit, sort, text (search), page
     for (let key in listParameters) {
       if (listParameters[key].isFilter) {
         switch (listParameters[key].type) {
           case 'TextInput':
           case 'SelectInput':
           case 'MultipleSelect':
-            tempQueries[key] = null;
+            tempQueries[key] = '';
             break;
           case 'NumberSlider':
             tempQueries[`${key}_min`] = listParameters[key].min;
@@ -70,7 +71,7 @@ export default function useQueryBuilder() {
 
     switch (typeof queriesParameter[key]) {
       case String:
-        setQueriesParameter({ ...queriesParameter, [key]: null });
+        setQueriesParameter({ ...queriesParameter, [key]: '' });
         break;
       case Number:
         setQueriesParameter({
