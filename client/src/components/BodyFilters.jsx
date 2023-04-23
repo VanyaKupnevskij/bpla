@@ -22,7 +22,6 @@ export default function BodyFilters() {
   const { query, submit, clearQuery } = useContext(QueryContext);
 
   function handleClickSubmit() {
-    console.log(query.current);
     submit();
   }
 

@@ -25,11 +25,16 @@ export default function useQueryBuilder() {
     for (let [key, value] of values) {
       if (key.includes('_str')) {
         key = key.replace('_str', '');
-        queriesParameter.current[key] = new Set([value]);
+        if (queriesParameter.current[key] === undefined) {
+          queriesParameter.current[key] = new Set([value]);
+        } else {
+          queriesParameter.current[key].add(value);
+        }
       } else {
         queriesParameter.current[key] = parseInt(value);
       }
     }
+
     if (values.length !== 0) {
       buildQuery();
       isReady.current = true;
@@ -47,7 +52,14 @@ export default function useQueryBuilder() {
     const queries = filtringQueries();
 
     for (let [key, value] of Object.entries(queries)) {
-      resultQueries.push(`${key}=${value}`);
+      if (key.includes('_str')) {
+        const listQueries = Array.from(value);
+        for (let item of listQueries) {
+          resultQueries.push(`${key}=${item}`);
+        }
+      } else {
+        resultQueries.push(`${key}=${value}`);
+      }
     }
 
     return resultQueries;
@@ -154,13 +166,11 @@ export default function useQueryBuilder() {
 
   function submit() {
     let queries = filtringQueries();
-    console.log('11', queries);
     for (let [key, query] of Object.entries(queries)) {
       if (key.includes('_str')) {
         queries[key] = Array.from(query);
       }
     }
-    console.log('12', queries);
     setSearchParams({ ...queries });
 
     onChange.current();

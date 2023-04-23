@@ -8,13 +8,14 @@ export default function ListCheckboxes({ name, listData = [] }) {
 
   function handleReadyQuery() {
     const listQuery = filteredQueries.current[name + '_str'];
-    // if (listQuery) {
-    //   for (let )
-    // }
-    // const minValue = filteredQueries.current[name + '_min'] ?? value[0];
-    // const maxValue = filteredQueries.current[name + '_max'] ?? value[1];
+    let newList = [...listChecked];
 
-    // setValue([minValue, maxValue]);
+    for (let value of listQuery) {
+      const index = listData.indexOf(value);
+      newList[index] = true;
+    }
+
+    setListChecked(newList);
   }
 
   useEffect(() => {
