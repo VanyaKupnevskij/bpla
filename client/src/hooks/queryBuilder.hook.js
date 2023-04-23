@@ -93,6 +93,16 @@ export default function useQueryBuilder() {
   }
 
   function initParameters() {
+    initFilters();
+
+    queriesParameter.current.text = new Set();
+    queriesParameter.current.limit = 0;
+    queriesParameter.current.page = 0;
+    queriesParameter.current.order = 1;
+    queriesParameter.current.sort = new Set();
+  }
+
+  function initFilters() {
     for (let key in listParameters) {
       if (listParameters[key].isFilter) {
         switch (listParameters[key].type) {
@@ -108,12 +118,6 @@ export default function useQueryBuilder() {
         }
       }
     }
-
-    queriesParameter.current.text = new Set();
-    queriesParameter.current.limit = 0;
-    queriesParameter.current.page = 0;
-    queriesParameter.current.order = 1;
-    queriesParameter.current.sort = new Set();
   }
 
   function setItemQuery(key, value, isAppend = true, replaceText = false) {
@@ -141,7 +145,7 @@ export default function useQueryBuilder() {
   }
 
   function clearQuery() {
-    initParameters();
+    initFilters();
     buildQuery();
   }
 
