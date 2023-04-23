@@ -36,6 +36,7 @@ router.get('/', async (req, res) => {
       queryToBD = Bpla.find({
         $or: [
           { _name: { $regex: regex } },
+          { model: { $regex: regex } },
           { shortDescription: { $regex: regex } },
           { description: { $regex: regex } },
         ],

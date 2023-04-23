@@ -60,7 +60,7 @@ export default function useQueryBuilder() {
       switch (typeof value) {
         case 'object':
           for (let item of value.values()) {
-            resultQueries[`${key}_str`] = item;
+            resultQueries[`${key}_str`] = item; // TODO: здесь не получается записывать множество значений
           }
           break;
 

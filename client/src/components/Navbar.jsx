@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -22,7 +22,15 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
-  const { submit, setItemQuery } = useContext(QueryContext);
+  const { submit, setItemQuery, filteredQueries } = useContext(QueryContext);
+
+  function handleReadyQuery() {
+    setSearchValue(filteredQueries.current.text_str ?? '');
+  }
+
+  useEffect(() => {
+    setTimeout(handleReadyQuery, 1);
+  }, []);
 
   function handleClickSearch() {
     navigate('/');
