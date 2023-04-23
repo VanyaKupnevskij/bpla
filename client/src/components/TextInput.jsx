@@ -19,7 +19,16 @@ export default function TextInput({
 }) {
   const { states } = useContext(FormContext);
   const [value, setValue] = useState(states.current[name]);
-  const { setItemQuery } = useContext(QueryContext);
+  const { setItemQuery, filteredQueries } = useContext(QueryContext);
+
+  function handleReadyQuery() {
+    const [query] = filteredQueries.current[name + '_str'];
+    setValue(query ?? '');
+  }
+
+  useEffect(() => {
+    setTimeout(handleReadyQuery, 1);
+  }, []);
 
   function handleBlur() {
     setItemQuery(name, value.trim(), true, true);
