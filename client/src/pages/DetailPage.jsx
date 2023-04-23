@@ -2,16 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ImagesCarousel from '../components/ImagesCarousel';
-import TableParameters from '../components/TableParameters';
 import useBplaServer from '../hooks/bplaServer.hook';
-import { Container, Paper } from '@mui/material';
+import { Box, Container, Paper, createTheme } from '@mui/material';
 import RadarChart from '../components/RadarChart';
 import Loader from '../components/Loader';
+import ListParameters from '../components/ListParameters';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/Navbar';
 
 import useQueryBuilder from '../hooks/queryBuilder.hook';
 import { useFormData } from '../hooks/formData.hook';
+import DetailInfoBlock from '../components/DetailInfoBlock';
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+      _800: 800,
+    },
+  },
+});
+
+const skipedListParams = [
+  '_name',
+  'model',
+  'shortDescription',
+  'description',
+  'sourceUrl',
+  'vendor',
+];
 
 export default function DetailPage() {
   const [data, setData] = useState(null);
@@ -20,6 +43,7 @@ export default function DetailPage() {
   const bplaId = useParams().id;
   const { QueryProvider } = useQueryBuilder();
   const { FormProvider } = useFormData();
+  const wrapBreakpoint = theme.breakpoints.down('_800');
 
   async function getBpla() {
     setData(await getBplaId(bplaId));
@@ -70,14 +94,32 @@ export default function DetailPage() {
   return (
     <QueryProvider>
       <Navbar displaySearch={false} />
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="lg">
         <CssBaseline />
         <FormProvider>
           <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>
             {!isLoading && (
               <>
-                <ImagesCarousel images={data.photos} />
-                <TableParameters datas={data} />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    [theme.breakpoints.down('_800')]: {
+                      flexWrap: 'wrap',
+                    },
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                  }}>
+                  <ImagesCarousel images={data.photos} elevation={0} displayNavText={false} />
+                  <DetailInfoBlock
+                    name={data._name}
+                    model={data.model}
+                    shortDescription={data.shortDescription}
+                    description={data.description}
+                    sourceUrl={data.sourceUrl}
+                    vendor={data.vendor}
+                  />
+                </Box>
+                <ListParameters datas={data} skipParameters={skipedListParams} />
 
                 {chartValues.length !== 0 && <RadarChart init={chartValues} />}
               </>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { FormContext } from '../context/formContext';
 import ImagesCarousel from './ImagesCarousel';
-import TableParameters from './TableParameters';
+import ListParameters from './ListParameters';
 
 import Typography from '@mui/material/Typography';
 
@@ -20,7 +20,7 @@ export default function Review() {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <ImagesCarousel images={states.current.images} />
       </div>
-      <TableParameters datas={states.current} />
+      <ListParameters datas={states.current} />
     </>
   );
 }

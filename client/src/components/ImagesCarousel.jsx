@@ -14,14 +14,13 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function renderImagesList(images, activeStep) {
   return images.map((image, index) => (
-    <div key={index}>
+    <Box key={index} sx={{ overflow: 'hidden' }}>
       {Math.abs(activeStep - index) <= 2 ? (
         <Box
           component="img"
           sx={{
             height: 255,
             display: 'block',
-            maxWidth: 400,
             overflow: 'hidden',
             width: '100%',
             objectFit: 'contain',
@@ -30,11 +29,11 @@ function renderImagesList(images, activeStep) {
           alt="previewPhoto"
         />
       ) : null}
-    </div>
+    </Box>
   ));
 }
 
-function ImagesCarousel({ images = [] }) {
+function ImagesCarousel({ images = [], elevation = 4, displayNavText = true }) {
   images = images.length === 0 ? [noPhoto] : images;
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -53,7 +52,18 @@ function ImagesCarousel({ images = [] }) {
   };
 
   return (
-    <Paper square elevation={4} sx={{ maxWidth: 400, flexGrow: 1, p: 1, m: 2, borderRadius: 1 }}>
+    <Paper
+      square
+      elevation={elevation}
+      sx={{
+        width: '90rem',
+        maxWidth: '40rem',
+        minWidth: { sm: '17rem', md: '22rem' },
+        flexGrow: 1,
+        p: 1,
+        mx: 2,
+        borderRadius: 1,
+      }}>
       <AutoPlaySwipeableViews index={activeStep} onChangeIndex={handleStepChange} enableMouseEvents>
         {renderImagesList(images, activeStep)}
       </AutoPlaySwipeableViews>
@@ -63,14 +73,14 @@ function ImagesCarousel({ images = [] }) {
         activeStep={activeStep}
         nextButton={
           <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-            Наступне
+            {displayNavText && 'Наступне'}
             <KeyboardArrowRight />
           </Button>
         }
         backButton={
           <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
             <KeyboardArrowLeft />
-            Попереднє
+            {displayNavText && 'Попереднє'}
           </Button>
         }
       />

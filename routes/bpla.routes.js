@@ -60,8 +60,6 @@ router.get('/', async (req, res) => {
 
     if (valueParams) {
       for (let [name, params] of Object.entries(valueParams)) {
-        console.log(name, params);
-
         queryToBD.find({ [`${name}`]: { $in: [...params] } });
       }
     }
