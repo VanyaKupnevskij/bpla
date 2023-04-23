@@ -16,7 +16,7 @@ export default function BplaCard({ title, idBpla, preview = noPhoto, children })
   }
 
   return (
-    <Card sx={{ height: '100%' }}>
+    <Card elevation={3} sx={{ height: '100%' }}>
       <CardActionArea sx={{ height: 'calc(100% - 3rem)' }}>
         <CardMedia
           onClick={handleClickDetail}

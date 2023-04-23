@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     const rangeParams = [];
-    const valueParams = [];
+    const valueParams = {};
 
     for (let key in req.query) {
       if (key.includes('_min')) {
@@ -20,8 +20,11 @@ router.get('/', async (req, res) => {
         rangeParams.push({ name, max });
       } else if (key.includes('_str') && key !== 'text_str' && key !== 'sort_str') {
         const name = key.replace('_str', '');
-        const value = req.query[key];
-        valueParams.push({ name, value });
+        let value = req.query[key];
+        if (!Array.isArray(value)) {
+          value = [value];
+        }
+        valueParams[name] = value;
       } else if (key.includes('_num')) {
         const name = key.replace('_num', '');
         const value = parseInt(req.query[name]);
@@ -55,9 +58,11 @@ router.get('/', async (req, res) => {
       }
     }
 
-    if (valueParams.length !== 0) {
-      for (let param of valueParams) {
-        queryToBD.where(param.name).equals(param.value);
+    if (valueParams) {
+      for (let [name, params] of Object.entries(valueParams)) {
+        console.log(name, params);
+
+        queryToBD.find({ [`${name}`]: { $in: [...params] } });
       }
     }
 
