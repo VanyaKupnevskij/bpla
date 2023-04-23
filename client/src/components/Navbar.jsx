@@ -25,7 +25,8 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
   const { submit, setItemQuery, filteredQueries } = useContext(QueryContext);
 
   function handleReadyQuery() {
-    setSearchValue(filteredQueries.current.text_str ?? '');
+    const [searchValue] = filteredQueries.current.text_str;
+    setSearchValue(searchValue ?? '');
   }
 
   useEffect(() => {

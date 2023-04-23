@@ -59,8 +59,11 @@ export default function useQueryBuilder() {
     for (let [key, value] of Object.entries(queriesParameter.current)) {
       switch (typeof value) {
         case 'object':
+          if (resultQueries[`${key}_str`] === undefined) {
+            resultQueries[`${key}_str`] = new Set();
+          }
           for (let item of value.values()) {
-            resultQueries[`${key}_str`] = item; // TODO: здесь не получается записывать множество значений
+            resultQueries[`${key}_str`].add(item); // TODO: здесь не получается записывать множество значений
           }
           break;
 
@@ -150,7 +153,14 @@ export default function useQueryBuilder() {
   }
 
   function submit() {
-    const queries = filtringQueries();
+    let queries = filtringQueries();
+    console.log('11', queries);
+    for (let [key, query] of Object.entries(queries)) {
+      if (key.includes('_str')) {
+        queries[key] = Array.from(query);
+      }
+    }
+    console.log('12', queries);
     setSearchParams({ ...queries });
 
     onChange.current();

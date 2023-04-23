@@ -18,8 +18,9 @@ export default function Sort() {
     if (filteredQueries.current.order) {
       setOrder(filteredQueries.current.order === -1);
     }
-    if (filteredQueries.current.sort_str) {
-      setSort(filteredQueries.current.sort_str);
+    const [sortValue] = filteredQueries.current.sort_str;
+    if (sortValue) {
+      setSort(sortValue);
     }
   }
 
