@@ -7,19 +7,21 @@ import { Typography } from '@mui/material';
 import Loader from './Loader';
 import { QueryContext } from '../context/queryContext';
 
-export default function ListCards({ sx }) {
+export default function ListCards({ onCountTotal, sx }) {
   const [bplas, setBplas] = useState([]);
   const { getBplas, isLoading } = useBplaServer();
   const { query, onReady, isReady, onChange } = useContext(QueryContext);
 
   async function getListBpla() {
     if (!isReady.current) return;
-    setBplas(await getBplas(query.current));
+    const { listBpla, countTotal } = await getBplas(query.current);
+    onCountTotal(countTotal);
+    setBplas(listBpla);
   }
 
   useEffect(() => {
     getListBpla();
-    onChange.current = getListBpla;
+    onChange.current = () => {};
     onReady.current = getListBpla;
   }, []);
 

@@ -1,16 +1,4 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Collapse,
-  Hidden,
-  Link,
-  Paper,
-  Tooltip,
-  Typography,
-  Zoom,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Chip, Paper, Tooltip, Typography, Zoom } from '@mui/material';
 import TextCollapse from './TextCollapse';
 
 export default function DetailInfoBlock({

@@ -72,15 +72,15 @@ router.get('/', async (req, res) => {
 
     const page = parseInt(req.query.page ?? 0); // start from 0 page
     const limit = parseInt(req.query.limit ?? 8);
-    queryToBD.skip(page * limit ?? 0).limit(limit);
 
-    const listBpla = await queryToBD.exec();
+    const countTotal = await Bpla.count(queryToBD);
+    const listBpla = await queryToBD.skip(page * limit).limit(limit);
 
     if (!listBpla) {
       return res.status(404).json({ message: 'БПЛА не знайдені за заданими парараметрами' });
     }
 
-    res.json(listBpla);
+    res.json({ countTotal, listBpla });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

@@ -15,6 +15,7 @@ import { useFormData } from '../hooks/formData.hook';
 
 export default function MainPage() {
   const [openFilters, setOpenFilters] = useState(false);
+  const [countTotal, setCountTotal] = useState(0);
   const { QueryProvider } = useQueryBuilder();
   const { FormProvider } = useFormData();
 
@@ -24,6 +25,10 @@ export default function MainPage() {
 
   const handleClickClose = () => {
     setOpenFilters(false);
+  };
+
+  const handleCountTotal = (count) => {
+    setCountTotal(count);
   };
 
   return (
@@ -52,12 +57,13 @@ export default function MainPage() {
               <Filters isDrawer={openFilters} handleClickClose={handleClickClose} />
               <Box component="main" sx={{ flexGrow: 1, flexShrink: 2, px: 3, pt: 0 }}>
                 <ListCards
+                  onCountTotal={handleCountTotal}
                   sx={{
                     overflow: 'auto',
                     height: 'calc(100vh - 14.5rem)',
                   }}
                 />
-                <Paginator />
+                <Paginator countTotal={countTotal} />
               </Box>
             </Box>
           </Paper>

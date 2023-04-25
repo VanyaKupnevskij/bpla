@@ -2,7 +2,7 @@ import * as React from 'react';
 import TablePagination from '@mui/material/TablePagination';
 import { QueryContext } from '../context/queryContext';
 
-export default function Paginator() {
+export default function Paginator({ countTotal }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
   const { submit, filteredQueries, setItemQuery } = React.useContext(QueryContext);
@@ -39,7 +39,7 @@ export default function Paginator() {
   return (
     <TablePagination
       component="div"
-      count={100}
+      count={countTotal}
       page={page}
       onPageChange={handleChangePage}
       rowsPerPage={rowsPerPage}

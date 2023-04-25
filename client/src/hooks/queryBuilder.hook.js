@@ -75,7 +75,7 @@ export default function useQueryBuilder() {
             resultQueries[`${key}_str`] = new Set();
           }
           for (let item of value.values()) {
-            resultQueries[`${key}_str`].add(item); // TODO: здесь не получается записывать множество значений
+            resultQueries[`${key}_str`].add(item);
           }
           break;
 
@@ -154,6 +154,10 @@ export default function useQueryBuilder() {
       }
     } else if (typeof value == 'number') {
       queriesParameter.current[key] = value;
+    }
+
+    if (key !== 'sort' && key !== 'page' && key !== 'order') {
+      queriesParameter.current.page = 0;
     }
 
     buildQuery();
