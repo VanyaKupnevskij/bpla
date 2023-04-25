@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/context';
 import { useHttp } from '../hooks/http.hook';
-import { useMessage } from '../hooks/message.hook';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -15,15 +14,14 @@ import { CssBaseline, Paper } from '@mui/material';
 
 export default function SignIn() {
   const auth = useContext(AuthContext);
-  const message = useMessage();
   const { request, loading, error, clearError } = useHttp();
   const { QueryProvider } = useQueryBuilder();
   const { FormProvider } = useFormData();
 
   useEffect(() => {
-    message(error);
+    console.log(error);
     clearError();
-  }, [error, message, clearError]);
+  }, [error, clearError]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

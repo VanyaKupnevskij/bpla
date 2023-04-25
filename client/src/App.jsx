@@ -5,8 +5,6 @@ import { useRoutes } from './routes';
 import { useAuth } from './hooks/auth.hook';
 import { AuthContext } from './context/context';
 import { ConfigContext } from './context/configContext';
-import { store } from './store/index';
-import { Provider } from 'react-redux';
 import Loader from './components/Loader';
 
 import { ThemeProvider } from '@mui/material/styles';
@@ -22,22 +20,20 @@ function App() {
   }
 
   return (
-    <Provider store={store}>
-      <ConfigContext.Provider value={{ modeView, setModeView }}>
-        <AuthContext.Provider
-          value={{
-            token,
-            login,
-            logout,
-            userId,
-            isAuthenticated,
-          }}>
-          <ThemeProvider theme={modeView === 'light' ? themeLight : themeDark}>
-            <Router>{routes}</Router>
-          </ThemeProvider>
-        </AuthContext.Provider>
-      </ConfigContext.Provider>
-    </Provider>
+    <ConfigContext.Provider value={{ modeView, setModeView }}>
+      <AuthContext.Provider
+        value={{
+          token,
+          login,
+          logout,
+          userId,
+          isAuthenticated,
+        }}>
+        <ThemeProvider theme={modeView === 'light' ? themeLight : themeDark}>
+          <Router>{routes}</Router>
+        </ThemeProvider>
+      </AuthContext.Provider>
+    </ConfigContext.Provider>
   );
 }
 

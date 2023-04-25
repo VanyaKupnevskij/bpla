@@ -40,7 +40,7 @@ export default function Paginator({ countTotal }) {
     <TablePagination
       component="div"
       count={countTotal}
-      page={page}
+      page={countTotal === 0 ? 0 : page}
       onPageChange={handleChangePage}
       rowsPerPage={rowsPerPage}
       rowsPerPageOptions={[8, 16, 24, 32]}
