@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 export default function TextCollapse({ text, maxLength }) {
   const [expanded, setExpanded] = useState(false);
-  const [innerText, setInnerText] = useState(text.substring(0, maxLength) + '...');
+  const [innerText, setInnerText] = useState(text.substring(0, maxLength));
 
   const titleButton = expanded ? 'скрити' : 'детальніше';
   const maxHeight = expanded ? '500vh' : maxLength * 0.4;

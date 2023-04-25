@@ -103,7 +103,7 @@ export default function DetailPage() {
                 <Box
                   sx={{
                     display: 'flex',
-                    [theme.breakpoints.down('_800')]: {
+                    [wrapBreakpoint]: {
                       flexWrap: 'wrap',
                     },
                     justifyContent: 'center',
