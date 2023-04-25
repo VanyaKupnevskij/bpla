@@ -9,9 +9,6 @@ import Loader from '../components/Loader';
 import ListParameters from '../components/ListParameters';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/Navbar';
-
-import useQueryBuilder from '../hooks/queryBuilder.hook';
-import { useFormData } from '../hooks/formData.hook';
 import DetailInfoBlock from '../components/DetailInfoBlock';
 
 const theme = createTheme({
@@ -41,8 +38,6 @@ export default function DetailPage() {
   const [chartValues, setChartValues] = useState([]);
   const { getBplaId, isLoading } = useBplaServer();
   const bplaId = useParams().id;
-  const { QueryProvider } = useQueryBuilder();
-  const { FormProvider } = useFormData();
   const wrapBreakpoint = theme.breakpoints.down('_800');
 
   async function getBpla() {
@@ -92,41 +87,39 @@ export default function DetailPage() {
   }
 
   return (
-    <QueryProvider>
+    <>
       <Navbar displaySearch={false} />
       <Container component="main" maxWidth="lg">
         <CssBaseline />
-        <FormProvider>
-          <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>
-            {!isLoading && (
-              <>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    [wrapBreakpoint]: {
-                      flexWrap: 'wrap',
-                    },
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }}>
-                  <ImagesCarousel images={data.photos} elevation={0} displayNavText={false} />
-                  <DetailInfoBlock
-                    name={data._name}
-                    model={data.model}
-                    shortDescription={data.shortDescription}
-                    description={data.description}
-                    sourceUrl={data.sourceUrl}
-                    vendor={data.vendor}
-                  />
-                </Box>
-                <ListParameters datas={data} skipParameters={skipedListParams} />
+        <Paper sx={{ minHeight: 'calc(100vh - 5rem)', mt: '4.5rem' }}>
+          {!isLoading && (
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  [wrapBreakpoint]: {
+                    flexWrap: 'wrap',
+                  },
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }}>
+                <ImagesCarousel images={data.photos} elevation={0} displayNavText={false} />
+                <DetailInfoBlock
+                  name={data._name}
+                  model={data.model}
+                  shortDescription={data.shortDescription}
+                  description={data.description}
+                  sourceUrl={data.sourceUrl}
+                  vendor={data.vendor}
+                />
+              </Box>
+              <ListParameters datas={data} skipParameters={skipedListParams} />
 
-                {chartValues.length !== 0 && <RadarChart init={chartValues} />}
-              </>
-            )}
-          </Paper>
-        </FormProvider>
+              {chartValues.length !== 0 && <RadarChart init={chartValues} />}
+            </>
+          )}
+        </Paper>
       </Container>
-    </QueryProvider>
+    </>
   );
 }

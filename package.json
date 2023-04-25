@@ -15,7 +15,7 @@
     "mern",
     "react"
   ],
-  "author": "Kupnevskij Vanya <vanakupnevskij@gmail.com>",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
