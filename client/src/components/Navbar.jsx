@@ -1,60 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import { Button, Container, InputBase, Paper, Tooltip } from '@mui/material';
-import Zoom from '@mui/material/Zoom';
+import { Button, Container } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import SearchIcon from '@mui/icons-material/Search';
 import ModeSwitch from './ModeSwitch';
 import FormGroup from '@mui/material/FormGroup';
 import LogoutIcon from '@mui/icons-material/Logout';
-import CloseIcon from '@mui/icons-material/Close';
 
 import logoImage from '../images/logo.png';
-import { QueryContext } from '../context/queryContext';
 import { AuthContext } from '../context/context';
+import SearchInput from './SearchInput';
 
 export default function Navbar({ displaySearch = true, displayLogout = false }) {
-  const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
-  const { submit, setItemQuery, filteredQueries } = useContext(QueryContext);
-
-  function handleReadyQuery() {
-    const [searchValue] = filteredQueries.current.text_str;
-    setSearchValue(searchValue ?? '');
-  }
-
-  useEffect(() => {
-    setTimeout(handleReadyQuery, 1);
-  }, []);
-
-  function handleClickSearch() {
-    navigate('/');
-    setItemQuery('text', searchValue, true, true);
-    submit();
-  }
-
-  function handleChangeSearch(event) {
-    setSearchValue(event.target.value);
-  }
-
-  function handleClickClear() {
-    setSearchValue('');
-    setItemQuery('text', '', true, true);
-    submit();
-  }
-
-  function handleKeyPress(event) {
-    if (event.keyCode == 13) {
-      event.preventDefault();
-      handleClickSearch();
-    }
-  }
 
   function handleClickHome() {
     navigate('/');
@@ -83,45 +45,7 @@ export default function Navbar({ displaySearch = true, displayLogout = false }) 
               БПЛА
             </Typography>
 
-            {displaySearch && (
-              <Paper
-                component="form"
-                elevation={3}
-                sx={{
-                  m: '4px',
-                  p: '2px 4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexGrow: 1,
-                }}>
-                {searchValue.length > 0 && (
-                  <IconButton
-                    onClick={handleClickClear}
-                    type="button"
-                    sx={{ p: '10px' }}
-                    aria-label="search">
-                    <CloseIcon />
-                  </IconButton>
-                )}
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  value={searchValue}
-                  onChange={handleChangeSearch}
-                  onKeyDown={handleKeyPress}
-                  placeholder="Пошук БПЛА..."
-                  inputProps={{ 'aria-label': 'search bpla' }}
-                />
-                <Tooltip TransitionComponent={Zoom} title="Search">
-                  <IconButton
-                    onClick={handleClickSearch}
-                    type="button"
-                    sx={{ p: '10px' }}
-                    aria-label="search">
-                    <SearchIcon />
-                  </IconButton>
-                </Tooltip>
-              </Paper>
-            )}
+            {displaySearch && <SearchInput />}
 
             <FormGroup
               sx={{
