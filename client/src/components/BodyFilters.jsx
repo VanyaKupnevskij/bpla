@@ -4,22 +4,19 @@ import {
   AccordionSummary,
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DoubleSlider from './DoubleSlider';
 
 import listParameters from '../context/listParameters';
-import TextInput from './TextInput';
 import ListCheckboxes from './ListCheckboxes';
 import { useContext } from 'react';
 import { QueryContext } from '../context/queryContext';
+import FilterTextInput from './FilterTextInput';
 
 export default function BodyFilters() {
-  const { query, submit, clearQuery } = useContext(QueryContext);
+  const { submit, clearQuery } = useContext(QueryContext);
 
   function handleClickSubmit() {
     submit();
@@ -48,7 +45,7 @@ export default function BodyFilters() {
             return (
               <Box my={2} key={item.name}>
                 <Typography variant="body1">Пошук за: {item.label.toLowerCase()}</Typography>
-                <TextInput
+                <FilterTextInput
                   sm={12}
                   required={item.required}
                   id={item.name}

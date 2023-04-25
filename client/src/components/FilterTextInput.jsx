@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { FormContext } from '../context/formContext';
 
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import { QueryContext } from '../context/queryContext';
 
-export default function TextInput({
+export default function FilterTextInput({
   id,
   required = false,
   multiline = false,
@@ -16,16 +16,25 @@ export default function TextInput({
   md,
   lg,
 }) {
-  const { states } = useContext(FormContext);
-  const [value, setValue] = useState(states.current[name]);
+  const [value, setValue] = useState('');
+  const { setItemQuery, filteredQueries } = useContext(QueryContext);
+
+  function handleReadyQuery() {
+    const [query] = filteredQueries.current[name + '_str'];
+    setValue(query ?? '');
+  }
+
+  useEffect(() => {
+    setTimeout(handleReadyQuery, 1);
+  }, []);
+
+  function handleBlur() {
+    setItemQuery(name, value.trim(), true, true);
+  }
 
   function handleChange(event) {
     setValue(event.target.value);
   }
-
-  useEffect(() => {
-    states.current[name] = value;
-  }, [value]);
 
   return (
     <Grid item xs={xs} sm={sm} md={md} lg={lg}>
@@ -36,6 +45,7 @@ export default function TextInput({
         value={value}
         name={name}
         onChange={handleChange}
+        onBlur={handleBlur}
         placeholder={placeholder}
         multiline={multiline}
         fullWidth
