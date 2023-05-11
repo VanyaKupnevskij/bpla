@@ -2,5 +2,5 @@
   "port": 80,
   "jwtSecret": "bpla production-secret_jwt",
   "mongoUri": "mongodb+srv://bpla_user:bpla_user_password@cluster0.qmdno9j.mongodb.net/?retryWrites=true&w=majority",
-  "baseUrl": "https://localhost"
+  "baseUrl": "https://bpla.vercel.app"
 }
