@@ -1,0 +1,12 @@
+{
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "80"
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/"
+    }
+  ]
+}
