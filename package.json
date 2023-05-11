@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "mern lern",
   "main": "app.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=production node app.js",
     "server": "nodemon app.js",
