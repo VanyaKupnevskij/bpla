@@ -1,11 +1,18 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "*.js",
+      "use": "@vercel/node"
+    }
+  ],
   "env": {
     "NODE_ENV": "production",
     "PORT": "80"
   },
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "/"
     }
   ]
