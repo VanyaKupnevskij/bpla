@@ -2,13 +2,13 @@
   "name": "mern",
   "version": "1.0.0",
   "description": "mern lern",
-  "main": "app.js",
+  "main": "index.js",
   "engines": {
     "node": "14.x"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node app.js",
-    "server": "nodemon app.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "server": "nodemon index.js",
     "client": "npm run start --prefix client",
     "client:install": "npm install --prefix client",
     "client:build": "npm run build --prefix client",
