@@ -1,6 +1,6 @@
 {
-  "port": 5000,
+  "port": 80,
   "jwtSecret": "bpla secret_jwt",
   "mongoUri": "mongodb+srv://bpla_user:bpla_user_password@cluster0.qmdno9j.mongodb.net/?retryWrites=true&w=majority",
-  "baseUrl": "http://localhost:5000"
+  "baseUrl": "https://bpla.vercel.app"
 }
